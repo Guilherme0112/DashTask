@@ -1,0 +1,31 @@
+.menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #1a1a1f;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    transition: .3s;
+}
+.menu_hidden{
+    left: -250px;
+}
+.menuButton{
+    font-size: 30px;
+    position: fixed;
+    left: 10px;
+    cursor: pointer;
+}
+.menu div {
+    display: grid;
+}
+.menu div * {
+    padding: 10px;
+    text-decoration: none;
+    text-align: start;
+}
