@@ -1,5 +1,12 @@
 /* components/FadeInSection.module.css */
 .fadeInSection {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   opacity: 0;
   transform: translateY(5px); /* Começa um pouco deslocado para baixo */
   margin-top: 30px; /* Margem inicial */

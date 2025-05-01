@@ -10,12 +10,12 @@ function App() {
 
   return (
     <>
-      <MenuBar />
       
       <FadeInSection>
+      <MenuBar />
 
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/painel" element={<Painel />} />
           <Route path="/financas" element={<Financas />} />
         </Routes>

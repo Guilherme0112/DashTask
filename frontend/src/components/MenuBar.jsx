@@ -16,7 +16,7 @@ function MenuBar() {
             </div>
 
             <div style={{paddingTop: "50px "}}>
-                <Link to="/login">Entrar</Link>
+                <Link to="/">Entrar</Link>
                 <Link to="/painel">Painel</Link>
                 <Link to="/financas">Finanças</Link>
                 <Link to="/logout">Sair</Link>

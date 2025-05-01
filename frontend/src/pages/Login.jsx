@@ -1,34 +1,37 @@
-// src/components/Login.jsx
-import styles from '../css/Components.module.css';
-
 function Login() {
 
 
-  // Lógica do formulário
-
+  
 
   return (
-    <div className={styles.container}>
-      <form className={styles.form}>
-        <h2 className={styles.title}>Entrar</h2>
-
-        <input 
-          type="email" 
-          placeholder="Email" 
-          className={styles.input}
+    <form class="border p-5 rounded shadow" style={{width: "400px"}}>
+      <div class="mb-3 text-start">
+        <label htmlFor="exampleInputEmail1" class="form-label">
+          Email
+        </label>
+        <input
+          type="email"
+          class="form-control"
+          id="exampleInputEmail1"
+          aria-describedby="emailHelp"
         />
-
-        <input 
-          type="password" 
-          placeholder="Senha" 
-          className={styles.input}
+  
+      </div>
+      <div class="mb-3 text-start">
+        <label htmlFor="exampleInputPassword1" class="form-label">
+          Senha
+        </label>
+        <input
+          type="password"
+          class="form-control"
+          id="exampleInputPassword1"
         />
+      </div>
 
-        <button type="submit" className={styles.button}>
-          Entrar
-        </button>
-      </form>
-    </div>
+      <button type="submit" class="btn btn-primary">
+        Entrar
+      </button>
+    </form>
   );
 }
 

@@ -1,0 +1,87 @@
+/* Template para a exibição de colunas e tópicos */
+.board {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  margin: 10px;
+}
+
+.column {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
+  min-width: 250px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.column_header {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+}
+
+.topics {
+  padding: 10px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.topic {
+  background-color: #f0f0f0;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: .3s;
+}
+.topic:hover{
+  background-color: #d3d1d1;
+}
+
+.add_topic {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background-color: #fafafa;
+  text-align: center;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.add_topic:hover {
+  background-color: #d3d1d1;
+}
+
+/* Container onde tem as inputs para adicionar novo tópico */
+.container_add_topic{
+  width: 400px;
+  background-color: white;
+  padding: 0 20px 20px 20px;
+  border-radius: 10px;
+}
+
+
+.show_topic_details{
+  width: 400px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Fundo quando um dialog está ativo */
+.background_container{
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

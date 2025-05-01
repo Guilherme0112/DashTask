@@ -2,14 +2,13 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background-color: #1a1a1f;
     width: 250px;
     height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     padding: 1rem;
-    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    box-shadow: 0 0 7px rgba(0,0,0,0.3);
     transition: .3s;
 }
 .menu_hidden{
