@@ -25,7 +25,7 @@ class AuthController extends Controller
             return response()->json([
                 'token' => $token,
                 'user' => $user
-            ]);
+            ])->cookie('auth', $token, 60 * 4);;
         }
 
         return response()->json(['message' => 'Credenciais inválidas'], 401);
@@ -37,7 +37,14 @@ class AuthController extends Controller
         Auth::user()->tokens->each(function ($token) {
             $token->delete();
         });
-
-        return response()->json(['message' => 'Logout realizado com sucesso!']);
+    
+        // Remover o cookie que tem o token
+        $response = response()->json(['message' => 'Logout realizado com sucesso!']);
+    
+        // Exclui o cookie do token
+        $response->withCookie(cookie()->forget('auth'));
+    
+        return $response;
     }
+    
 }

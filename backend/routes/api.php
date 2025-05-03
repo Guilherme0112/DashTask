@@ -4,13 +4,10 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
-Route::get('/', function () {
+Route::get('/hello', function () {
     return response()->json([
-        'status' => 'teste',
-        'mensagem' => 'teste mensagem'
+        'mensagem' => 'Hello World'
     ]);
 });
 
