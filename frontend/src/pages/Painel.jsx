@@ -44,7 +44,7 @@ function Painel() {
   return (
     <>
       {/* Template das colunas */}
-      <section class="d-flex justify-content-start align-items-center flex-wrap">
+      <section className="d-flex justify-content-start align-items-center flex-wrap">
         <div className={style.board}>
           <div className={style.column}>
             <div className={style.column_header}>Coluna 1</div>
@@ -82,7 +82,7 @@ function Painel() {
         <div className={style.container_add_topic}>
           {/* Botão para fechar */}
           <div className={`d-flex justify-content-end`}>
-            <p onClick={closeTopicDetails} class="fs-3 fw-bold" style={{cursor: "pointer"}}>×</p>
+            <p onClick={closeTopicDetails} className="fs-3 fw-bold" style={{cursor: "pointer"}}>×</p>
           </div>
 
             {/* Botão de editar/salvar */}
@@ -93,7 +93,7 @@ function Painel() {
           </div>
 
           {/* Título do tópico */}
-          <div class="form-floating mb-3">
+          <div className="form-floating mb-3">
             <input
               type="email"
               className={`${editTopic ? 'form-control' : 'form-control-plaintext'} ${errorTopic ? 'is-invalid' : ''}`}
@@ -105,12 +105,12 @@ function Painel() {
             <label for="floatingInput">Titulo do tópico</label>
 
             {errorTopic && (
-              <div class="invalid-feedback">Mensagem de erro</div>
+              <div className="invalid-feedback">Mensagem de erro</div>
             )}
           </div>
 
           {/* Descrição do tópico */}
-          <div class="form-floating mb-3">
+          <div className="form-floating mb-3">
             <textarea
               className={`${editTopic ? 'form-control' : 'form-control-plaintext'} ${errorTopic ? 'is-invalid' : ''}`}
               id="floatingTextarea"
@@ -122,9 +122,9 @@ function Painel() {
           </div>
 
           {/* Valor (opcional) */}
-          <div class="input-group mb-3">
-            <span class="input-group-text">R$</span>
-            <div class="form-floating">
+          <div className="input-group mb-3">
+            <span className="input-group-text">R$</span>
+            <div className="form-floating">
               <input
                 type="text"
                 className={`${editTopic ? 'form-control' : 'form-control-plaintext'} ${errorTopic ? 'is-invalid' : ''}`}
@@ -136,7 +136,7 @@ function Painel() {
             </div>
           </div>
 
-          <button onClick={submitTopic} class="btn btn-primary d-none">
+          <button onClick={submitTopic} className="btn btn-primary d-none">
             Salvar
           </button>
         </div>
@@ -149,13 +149,13 @@ function Painel() {
           <div className={style.container_add_topic}>
             {/* Botão para fechar */}
             <div className={`d-flex justify-content-end`}>
-                <p onClick={closeAddTopic} class="fs-3 fw-bold" style={{cursor: "pointer"}}>×</p>
+                <p onClick={closeAddTopic} className="fs-3 fw-bold" style={{cursor: "pointer"}}>×</p>
             </div>
 
-            <h3 class="mb-4">Criar novo tópico</h3>
+            <h3 className="mb-4">Criar novo tópico</h3>
 
             {/* Título do tópico */}
-            <div class="form-floating mb-3">
+            <div className="form-floating mb-3">
               <input
                 type="email"
                 className={`form-control ${errorTopic ? 'is-invalid' : ''}`}
@@ -166,14 +166,14 @@ function Painel() {
               <label for="floatingInput">Titulo do tópico</label>
 
               {errorTopic && (
-                <div class="invalid-feedback">Mensagem de erro</div>
+                <div className="invalid-feedback">Mensagem de erro</div>
               )}
             </div>
 
             {/* Descrição do tópico */}
-            <div class="form-floating mb-3">
+            <div className="form-floating mb-3">
               <textarea
-                class="form-control"
+                className="form-control"
                 id="floatingTextarea"
                 placeholder="Descrição"
                 style={{ maxHeight: "200px" }}
@@ -182,12 +182,12 @@ function Painel() {
             </div>
 
             {/* Valor (opcional) */}
-            <div class="input-group mb-3">
-              <span class="input-group-text">R$</span>
-              <div class="form-floating">
+            <div className="input-group mb-3">
+              <span className="input-group-text">R$</span>
+              <div className="form-floating">
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="floatingInputGroup1"
                   placeholder="Valor"
                 />
@@ -195,7 +195,7 @@ function Painel() {
               </div>
             </div>
 
-            <button onClick={submitTopic} class="btn btn-primary">
+            <button onClick={submitTopic} className="btn btn-primary">
               Salvar
             </button>
           </div>

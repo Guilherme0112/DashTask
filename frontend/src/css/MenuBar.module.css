@@ -10,7 +10,7 @@
     padding: 1rem;
     box-shadow: 0 0 7px rgba(0,0,0,0.3);
     transition: .3s;
-    /* backdrop-filter: blur(40px); */
+    backdrop-filter: blur(40px);
 }
 .menu_hidden{
     left: -250px;

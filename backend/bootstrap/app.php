@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\PreventRedirectOnAuth;
 use App\Http\Middleware\TokenFromCookie;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(HandleCors::class);
         $middleware->append(TokenFromCookie::class);
+        $middleware->append(PreventRedirectOnAuth::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
