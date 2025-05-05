@@ -3,48 +3,60 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-
-        // Válida os dados (Verifica se as credenciais são válidas)
+        // Valida os dados
         $request->validate([
-            "email" => "required|email",
-            "password" => "required"
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-        // Tentando autenticar o usuário
+        // Tenta autenticar o usuário
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
+
+            // Cria um token para o usuário
             $token = $user->createToken('api-token')->plainTextToken;
 
             return response()->json([
                 'token' => $token,
-                'user' => $user
-            ])->cookie('auth', $token, 60 * 4);;
+                'user' => $user,
+            ])->cookie('auth', $token, 60 * 4);
         }
 
+        // Se as credenciais forem inválidas
         return response()->json(['message' => 'Credenciais inválidas'], 401);
     }
 
-    public function logout(Request $request)
-    {
-        // Revogar o token atual
-        Auth::user()->tokens->each(function ($token) {
+    public function logout(Request $request): JsonResponse
+{
+    // Verifica se o usuário está autenticado
+    if ($request->user()) {
+        // Revoga o token de acesso atual (caso seja um PersonalAccessToken)
+        $token = $request->user()->currentAccessToken();
+
+        // Verifica se é um token de acesso pessoal (PersonalAccessToken)
+        if ($token instanceof PersonalAccessToken) {
+            // Deleta o token
             $token->delete();
-        });
-    
-        // Remover o cookie que tem o token
-        $response = response()->json(['message' => 'Logout realizado com sucesso!']);
-    
-        // Exclui o cookie do token
-        $response->withCookie(cookie()->forget('auth'));
-    
-        return $response;
+        }
+
+        // Exclui o cookie de autenticação
+        return response()->json(['message' => 'Desconectado com sucesso'])
+                         ->withCookie(cookie()->forget('auth'));
     }
+
+    // Caso o usuário não esteja autenticado
+    return response()->json(['message' => 'Não autenticado'], 401);
+}
+
     
+
+
 }

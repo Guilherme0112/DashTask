@@ -27,17 +27,13 @@ function Login() {
       body: formData,
     });
 
-    console.log("envio")
-
     // Verifica se retornou erro
     if (!res.ok) {
-      console.log("errp")
       const errorData = await res.json();
       setError(errorData.message || "Erro ao fazer login");
       return;
     }
 
-    console.log("redirect")
     setAuthorization(true);
 
     // Se não teve erro, redireciona para o painel

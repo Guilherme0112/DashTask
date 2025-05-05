@@ -13,9 +13,9 @@
 
             try {
 
-                $userService->save($request, null);
+                $user = $userService->save($request, null);
                 
-                return response()->json($request);
+                return response()->json($user);
 
             } catch (ValidationException $e) {
 
@@ -26,9 +26,5 @@
                 return response()->json(['errors'=> $th->getMessage()],500);
 
             }
-
-            
-
         }
-
     }

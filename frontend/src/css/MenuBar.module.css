@@ -19,6 +19,8 @@
     font-size: 30px;
     position: fixed;
     left: 10px;
+    top: 10px;
+    z-index: 2;
     cursor: pointer;
 }
 .menu div {
