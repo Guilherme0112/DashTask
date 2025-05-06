@@ -26,9 +26,7 @@ function Painel() {
   };
   const showTopic = (topic) => {
     setSelectedTopic(topic); 
-    if (editTopic
-      
-    ) enableEditTopic();
+    if (editTopic) enableEditTopic();
     setShowTopicDetails((prev) => !prev); 
   };
   const showNewColumn = () => {
@@ -86,6 +84,7 @@ function Painel() {
                 showTopic={showTopic}
                 showAddTopic={showAddTopic}
                 setColumnIdForTopic={setColumnIdForTopic}
+                setExistsColumn={setExistsColumn}
               />
             ))
           )}

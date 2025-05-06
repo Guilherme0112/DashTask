@@ -1,7 +1,7 @@
 import { deleteColumn } from "../../js/painel/crudColumn";
 import style from "../../css/Painel.module.css";
 
-export default function Column({ coluna, showTopic, showAddTopic, setColumnIdForTopic }) {
+export default function Column({ coluna, showTopic, showAddTopic, setColumnIdForTopic, setExistsColumn }) {
 
     // Deletar colunas
     async function deleteColumnFunction(id) {
