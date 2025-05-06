@@ -7,13 +7,13 @@ export default function ProtectedRoutes({ children }) {
 
   if (loading)
     return (
-      <div className="w-100 text-center">
+      <div className={"w-100 h-100 d-flex justify-content-center align-items-center"}>
         <div
-          className="spinner-border"
+          className={"spinner-border"}
           style={{width: "3rem", height: "3rem"}}
           role="status"
         >
-          <span className="sr-only"></span>
+          <span className={"sr-only"}></span>
         </div>
       </div>
     );

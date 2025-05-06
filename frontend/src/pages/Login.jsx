@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/auth/AuthContext";
 
 function Login() {
-
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +11,6 @@ function Login() {
 
   // Submit login
   async function submit(event) {
-
     event.preventDefault();
 
     // Cria o objeto do formulário e adiciona os valroes
@@ -41,58 +39,57 @@ function Login() {
   }
 
   return (
-
     // Início do formulário
-    <form
-      className="border p-5 rounded shadow"
-      style={{ width: "400px" }}
-      onSubmit={submit}
-    >
-
-      {/* Email */}
-      <div className="mb-3 text-start">
-        <label htmlFor="exampleInputEmail1" className="form-label">
-          Email
-        </label>
-        <input
-          type="email"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      {/* Fim do email */}
-
-      {/* Senha */}
-      <div className="mb-3 text-start">
-        <label htmlFor="exampleInputPassword1" className="form-label">
-          Senha
-        </label>
-        <input
-          type="password"
-          className="form-control"
-          id="exampleInputPassword1"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      {/* Fim da senha */}
-
-      {/* Mensagem de erro */}
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
+    <main>
+      <form
+        className="border p-5 rounded shadow"
+        style={{ width: "400px" }}
+        onSubmit={submit}
+      >
+        {/* Email */}
+        <div className="mb-3 text-start">
+          <label htmlFor="exampleInputEmail1" className="form-label">
+            Email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
-      )}
+        {/* Fim do email */}
 
-      {/* Botão para fazer login */}
-      <button type="submit" className="btn btn-primary">
-        Entrar
-      </button>
-      
-    </form>
+        {/* Senha */}
+        <div className="mb-3 text-start">
+          <label htmlFor="exampleInputPassword1" className="form-label">
+            Senha
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            id="exampleInputPassword1"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        {/* Fim da senha */}
+
+        {/* Mensagem de erro */}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+
+        {/* Botão para fazer login */}
+        <button type="submit" className="btn btn-primary">
+          Entrar
+        </button>
+      </form>
+    </main>
   );
 }
 

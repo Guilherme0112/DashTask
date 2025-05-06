@@ -7,6 +7,7 @@
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   margin: 10px;
+  background-color: #fff;
 }
 
 .column {
@@ -25,6 +26,22 @@
   color: white;
   border-radius: 8px 8px 0 0;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.trash_button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.trash_button:hover {
+  transform: scale(1.1);
 }
 
 .topics {
@@ -39,9 +56,10 @@
   padding: 10px;
   border-radius: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: .3s;
+  transition: 0.3s;
 }
-.topic:hover{
+
+.topic:hover {
   background-color: #d3d1d1;
 }
 
@@ -51,7 +69,7 @@
   background-color: #fafafa;
   text-align: center;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .add_topic:hover {

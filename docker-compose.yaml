@@ -1,12 +1,25 @@
 services:
-  frontend:
-    build: ./frontend
+
+  # banco de dados
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5173:5173"
+    - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     networks:
-      - app-network 
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-
+  # PHP - Laravel
   backend:
     build: ./backend
     networks:
@@ -25,25 +38,13 @@ services:
         php artisan serve --host=0.0.0.0 --port=8000
       "
 
-
-
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+  # Node - React
+  frontend:
+    build: ./frontend
     ports:
-    - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      - "5173:5173"
     networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - app-network 
 
 networks:
   app-network:

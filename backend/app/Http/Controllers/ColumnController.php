@@ -43,7 +43,7 @@ class ColumnController extends Controller
         } catch (ValidationException | Exception $e) {
 
             // Retorna as mensagens de erro das exceptions
-            return response()->json(["erro" => $e->getMessage()]);
+            return response()->json(["errors" => $e->getMessage()]);
         }
     }
 
@@ -52,18 +52,19 @@ class ColumnController extends Controller
      *
      * @param Request Requisição vinda do front
      * @param ColumnForTopicsService Service que valida as colunas
+     * @param int Id da coluna que deseja atualizar
      * @return JsonResponse Registro da coluna no banco de dados (Quando criada)
      * 
      * @throws ValidationException Erros de validação
      * @throws Exception Erros genéricos
      */
-    public function update(Request $request, ColumnForTopicsService $columnForTopicsService): JsonResponse
+    public function update(Request $request, ColumnForTopicsService $columnForTopicsService, int $id): JsonResponse
     {
 
         try {
 
             // Valida e tenta salvar os dados no banco de dados
-            $column = $columnForTopicsService->save($request, null);
+            $column = $columnForTopicsService->save($request, $id);
 
             // Retorna o registro salvo no banco de dados
             return response()->json($column);
@@ -71,7 +72,7 @@ class ColumnController extends Controller
         } catch (ValidationException | Exception $e) {
 
             // Retorna as mensagens de erro das exceptions
-            return response()->json(["erro" => $e->getMessage()]);
+            return response()->json(["errors" => $e->getMessage()]);
         }
     }
 
@@ -82,11 +83,11 @@ class ColumnController extends Controller
 
             $columnForTopicsService->delete($id);
 
-            return response()->json(["message" => "Coluna deletada com sucesso"], 200);
+            return response()->json(["success" => "Coluna deletada com sucesso"], 200);
 
         } catch (Exception | ModelNotFoundException $e) {
 
-            return response()->json(["erro" => "Não foi possível deletar esta coluna"]);
+            return response()->json(["errors" => "Não foi possível deletar esta coluna"]);
         }
     }
 }
