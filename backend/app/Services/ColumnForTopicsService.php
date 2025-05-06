@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class ColumnForTopicsService{
+class ColumnForTopicsService
+{
 
     /** Método que valida e salva a coluna
      * 
@@ -24,14 +25,14 @@ class ColumnForTopicsService{
 
         try {
 
-
             // Valida os dados da requisição 
             $validated = $request->validate([
                 "name" => "required|min:2|max:80",
             ]);
 
             // Salva o registro no banco de dados (caso não tenha passado um id)
-            if($id === null) return ColumnForTopic::create($validated);
+            if ($id === null)
+                return ColumnForTopic::create($validated);
 
             // Busca pela coluna e atualiza o registro
             $column = ColumnForTopic::findOrFail($id);
@@ -55,12 +56,14 @@ class ColumnForTopicsService{
     public function delete(int $id): void
     {
         try {
-            
-            // adicionar lógica para deletar topicos da coluna
 
+            // Busca pela coluna no banco de dados
             $column = ColumnForTopic::findOrFail($id);
+
+            // Deleta os tópicos relacionados e deleta a coluna
+            $column->topics()->delete();
             $column->delete();
-            
+
         } catch (Exception | ModelNotFoundException $e) {
             throw $e;
         }

@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import style from "../css/Painel.module.css";
-import { deleteColumn, fecthColumns } from "../js/painel/crudColumn";
-import CreateColumn from "../components/painel/createColumn";
-import CreateTopic from "../components/painel/createTopic";
-import EditTopic from "../components/painel/editTopic";
+import { fecthColumns } from "../js/painel/crudColumn";
+import CreateColumn from "../components/Painel/CreateColumn";
+import CreateTopic from "../components/Painel/CreateTopic";
+import EditTopic from "../components/Painel/EditorOrShowTopic";
+import Column from "../components/Painel/Column";
 
 function Painel() {
-
   // Tópicos
   const [editTopic, setEditTopic] = useState(false);
   const [showTopicDetails, setShowTopicDetails] = useState(false);
+  const [columnIdForTopic, setColumnIdForTopic] = useState(null);
+  const [selectedTopic, setSelectedTopic] = useState(null);
   // Coluna
   const [newColumn, setNewColumn] = useState("");
   const [existsColumn, setExistsColumn] = useState([]);
@@ -17,20 +18,19 @@ function Painel() {
   const [addTopic, setAddTopic] = useState(false);
 
   // Eventos para abrir e fechar dialogs
-  const showAddTopic = () => { setAddTopic((prev) => !prev) };
-  const enableEditTopic = () => { setEditTopic((prev) => !prev) };
-  const showTopic = () => { setShowTopicDetails((prev) => !prev) };
-  const showNewColumn = () => { setNewColumn((prev) => !prev) };
-
-  // Deletar colunas
-  async function deleteColumnFunction(id) {
-    try {
-      await deleteColumn(id);
-      setExistsColumn((prev) => prev.filter((coluna) => coluna.id !== id));
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const showAddTopic = () => {
+    setAddTopic((prev) => !prev);
+  };
+  const enableEditTopic = () => {
+    setEditTopic((prev) => !prev);
+  };
+  const showTopic = (topic) => {
+    setSelectedTopic(topic); 
+    setShowTopicDetails((prev) => !prev); 
+  };
+  const showNewColumn = () => {
+    setNewColumn((prev) => !prev);
+  };
 
   // Buscar colunas
   useEffect(() => {
@@ -62,7 +62,9 @@ function Painel() {
         )}
         <div className={"w-100 d-flex align-items-start justify-content-start"}>
           {/* Botão para abrir dialog de criar colunas */}
-          <button onClick={() => showNewColumn()} className="btn btn-primary m-3">
+          <button
+            onClick={() => showNewColumn()}
+            className="btn btn-primary m-3">
             Criar Coluna
           </button>
 
@@ -75,30 +77,13 @@ function Painel() {
             </div>
           ) : (
             existsColumn.length > 0 && existsColumn.map((coluna, index) => (
-              <div key={index} className={style.board}>
-                <div className={style.column}>
-                  <div className={style.column_header}>
-                    <span>{coluna.name}</span>
-                    <button
-                      className={style.trash_button}
-                      onClick={() => deleteColumnFunction(coluna.id)}
-                    >
-                      🗑️
-                    </button>
-                  </div>
-
-                  <div className={style.topics}>
-                    <div className={style.topic} onClick={() => showTopic()}>
-                      Tópico 1
-                    </div>
-                    <div className={style.topic}>Tópico 2</div>
-                  </div>
-
-                  <div className={style.add_topic} onClick={() => showAddTopic()}>
-                    + Adicionar tópico
-                  </div>
-                </div>
-              </div>
+              <Column 
+                key={coluna.id}
+                coluna={coluna}
+                showTopic={showTopic}
+                showAddTopic={showAddTopic}
+                setColumnIdForTopic={setColumnIdForTopic}
+              />
             ))
           )}
         </div>
@@ -110,11 +95,15 @@ function Painel() {
           showTopic={showTopic}
           editTopic={editTopic}
           enableEditTopic={enableEditTopic}
+          selectedTopic={selectedTopic}
         />
       )}
 
       {/* Criar novo tópico */}
-      {addTopic && <CreateTopic showAddTopic={showAddTopic} />}
+      {addTopic && <CreateTopic 
+                    showAddTopic={showAddTopic}
+                    columnId={columnIdForTopic} 
+                    setExistsColumn={setExistsColumn}/> }
     </>
   );
 }

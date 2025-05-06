@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/auth/AuthContext";
+import { useAuth } from "../components/Auth/AuthContext";
 
 function Login() {
   const [error, setError] = useState("");
@@ -40,7 +40,7 @@ function Login() {
 
   return (
     // Início do formulário
-    <main>
+    <main className={"h-100 d-flex align-items-center flex-wrap"}>
       <form
         className="border p-5 rounded shadow"
         style={{ width: "400px" }}

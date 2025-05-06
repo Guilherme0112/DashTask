@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class ColumnForTopic extends Model
@@ -11,5 +11,10 @@ class ColumnForTopic extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function topics(): HasMany
+    {
+        return $this->hasMany(Topic::class, 'column_id');
+    }
 
 }

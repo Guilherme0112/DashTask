@@ -1,7 +1,7 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
 
-export default function EditTopic({showTopic, enableEditTopic, editTopic}) {
+export default function EditTopic({showTopic, enableEditTopic, editTopic, selectedTopic}) {
 
   const [topicTitle, setTopicTitle] = useState("");
   const [errorTopic, setErrorTopic] = useState("");
@@ -38,12 +38,13 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic}) {
         {/* Título do tópico */}
         <div className="form-floating mb-3">
           <input
-            type="email"
+            type="text"
             className={`${
               editTopic ? "form-control" : "form-control-plaintext"
             } ${errorTopic ? "is-invalid" : ""}`}
             id="floatingInput"
             placeholder="Titulo do tópico"
+            value={selectedTopic.name}
             readOnly={!editTopic}
             onChange={(e) => setTopicTitle(e.target.value)}
           />
@@ -63,7 +64,8 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic}) {
             id="floatingTextarea"
             placeholder="Descrição"
             readOnly={!editTopic}
-            style={{ maxHeight: "200px" }}
+            value={selectedTopic.description}
+            style={{ maxHeight: "200px", height: "auto" }}
           ></textarea>
           <label htmlFor="floatingTextarea">Descrição</label>
         </div>
@@ -79,6 +81,7 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic}) {
               } ${errorTopic ? "is-invalid" : ""}`}
               id="floatingInputGroup1"
               readOnly={!editTopic}
+              value={selectedTopic.value}
               placeholder="Valor"
             />
             <label htmlFor="floatingInputGroup1">Valor</label>

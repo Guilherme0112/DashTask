@@ -13,4 +13,10 @@ class Topic extends Model
         "column_id"
     ];
 
+    public function column()
+    {
+        return $this->belongsTo(ColumnForTopic::class, 'column_id');
+    }
+
+
 }

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useInView } from 'framer-motion';
-import styles from '../css/FadeInSection.module.css'; // ✅ Correto
+import styles from '../css/FadeInSection.module.css';
 
 const FadeInSection = ({ children }) => {
   const ref = useRef(null);

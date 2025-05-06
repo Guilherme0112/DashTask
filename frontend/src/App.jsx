@@ -5,8 +5,8 @@ import MenuBar from './components/MenuBar';
 import Login from './pages/Login';
 import Painel from './pages/Painel';
 import Financas from './pages/Financas';
-import ProtectedRoutes from './components/auth/ProtectedRoutes';
-import { AuthProvider } from './components/auth/AuthContext';
+import ProtectedRoutes from './components/Auth/ProtectedRoutes';
+import { AuthProvider } from './components/Auth/AuthContext';
 
 function App() {
 

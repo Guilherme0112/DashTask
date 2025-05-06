@@ -1,16 +1,67 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
 
-export default function CreateTopic({ showAddTopic }) {
+/** Componente de criação de tópicos
+ * 
+ * @param showAddTopic Função que abre/fecha dialog
+ * @param columnId Id da coluna que receberá o tópico
+ * @param setExistsColumn Colunas existentes até o momento 
+ */
+export default function CreateTopic({ showAddTopic, columnId, setExistsColumn }) {
 
+  // Valores do tópico
   const [topicDescription, setTopicDescription] = useState("");
   const [topicValue, setTopicValue] = useState("");
   const [topicTitle, setTopicTitle] = useState("");
-
+  // Erro do tópico
   const [errorTopic, setErrorTopic] = useState("");
 
+  // Função para salvar o tópico
+  async function submit() {
 
-  // Função de criar topico
+    // Construção do formulário
+    const formData = new FormData();
+    formData.append("name", topicTitle);
+    formData.append("description", topicDescription);
+    formData.append("value", topicValue);
+    formData.append("column_id", columnId);
+
+    try {
+      
+      // Requisição para criar
+      const res = await fetch("http://localhost:8000/api/topics", {
+        method: "POST",
+        credentials: "include",
+        body: formData
+      });
+
+      // Erro na requisição
+      if(!res.ok){
+        const data = await res.json();
+        setErrorTopic(data.errors || "Erro ao criar tópico");
+        showAddTopic();
+        return;
+      }
+
+      // Pega o tópico retornado e adiciona na array topics onde o id da
+      // coluna retornada corresponda ao id da coluna da array
+      const data = await res.json();
+      setExistsColumn(prevColumns =>
+        prevColumns.map(col =>
+          String(col.id) === data.column_id
+            ? { ...col, topics: [...col.topics, data] }
+            : col
+        )
+      );
+
+      showAddTopic();
+
+    } catch (error) {
+      setErrorTopic("Ocorreu algum erro. Tente novamente mais tarde");
+      console.log(error);
+    }
+  }
+
 
   return (
     <div className={style.background_container}>
@@ -74,7 +125,7 @@ export default function CreateTopic({ showAddTopic }) {
           </div>
         </div>
 
-        <button className="btn btn-primary">Salvar</button>
+        <button className="btn btn-primary" onClick={() => submit()}>Salvar</button>
       </div>
     </div>
   );

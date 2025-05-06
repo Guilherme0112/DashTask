@@ -1,6 +1,9 @@
 <?php
 
+namespace App\Services;
+
 use App\Models\Topic;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -10,12 +13,20 @@ class TopicService {
     {
         try {
             
-            $request->validate([
+            $validated = $request->validate([
                 "name" => "required|min:2|max:50",
                 "description" => "nullable|string",
-                "value" => "nullable|number|min:0",
+                "value" => "nullable|numeric|min:0",
+                "column_id" => "required|exists:column_for_topics,id"
             ]);
 
+            if($id != null){
+                $topic = Topic::findOrFail($id);
+                $topic->update($validated);
+                return $topic;
+            }
+
+            return Topic::create($validated);
 
         } catch (Exception | ValidationException $e) {
             throw $e;
