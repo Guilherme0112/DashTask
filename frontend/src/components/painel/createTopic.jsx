@@ -49,7 +49,7 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
           String(col.id) === data.column_id
-            ? { ...col, topics: [...col.topics, data] }
+            ? { ...col, topics: [...col.topics || [], data] }
             : col
         )
       );

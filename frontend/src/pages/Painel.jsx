@@ -26,6 +26,9 @@ function Painel() {
   };
   const showTopic = (topic) => {
     setSelectedTopic(topic); 
+    if (editTopic
+      
+    ) enableEditTopic();
     setShowTopicDetails((prev) => !prev); 
   };
   const showNewColumn = () => {
