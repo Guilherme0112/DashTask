@@ -16,8 +16,13 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
   // Erro do tópico
   const [errorTopic, setErrorTopic] = useState("");
 
+  const [loadCreateTopic, setLoadCreateTopic] = useState(false);
+
+
   // Função para salvar o tópico
   async function submit() {
+
+    setLoadCreateTopic(true);
 
     // Construção do formulário
     const formData = new FormData();
@@ -27,6 +32,7 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
     formData.append("column_id", columnId);
 
     try {
+      
       
       // Requisição para criar
       const res = await fetch("http://localhost:8000/api/topics", {
@@ -59,6 +65,8 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
     } catch (error) {
       setErrorTopic("Ocorreu algum erro. Tente novamente mais tarde");
       console.log(error);
+    } finally {
+      setLoadCreateTopic(false);
     }
   }
 
@@ -125,7 +133,16 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
           </div>
         </div>
 
-        <button className="btn btn-primary" onClick={() => submit()}>Salvar</button>
+        <button className="btn btn-primary" onClick={() => submit()}>
+          {loadCreateTopic ? (
+            <div className={"spinner-border spinner-border-sm text-white"} role="status">
+              <span className={"visually-hidden"}></span>
+            </div>
+          ) : (
+            <span>Salvar</span>
+          )}
+          
+        </button>
       </div>
     </div>
   );

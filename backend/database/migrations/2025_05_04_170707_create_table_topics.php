@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->decimal('value',10,2);
-            $table->unsignedBigInteger('column_id')->nullable();
+            $table->unsignedBigInteger('column_id');
             $table->foreign("column_id")->references("id")->on("column_for_topics");
             $table->timestamps();
         });

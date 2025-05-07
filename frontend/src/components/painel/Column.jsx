@@ -1,18 +1,27 @@
 import { deleteColumn } from "../../js/painel/crudColumn";
 import style from "../../css/Painel.module.css";
+import { useState } from "react";
 
-export default function Column({ coluna, showTopic, showAddTopic, setColumnIdForTopic, setExistsColumn }) {
+export default function Column({ coluna, showTopic, showAddTopic, setColumnIdForTopic, setExistsColumn    }) {
+
+  const [loadDeleteColumn, setLoadDeleteColumn] = useState(false);
 
     // Deletar colunas
     async function deleteColumnFunction(id) {
-    try {
+      try {
+
+        setLoadDeleteColumn(true);
         await deleteColumn(id);
         setExistsColumn((prev) => prev.filter((coluna) => coluna.id !== id));
-    } catch (error) {
-        console.error(error);
-    }
-    }
 
+      } catch (error) {
+
+        console.error(error);
+      } finally {
+
+        setLoadDeleteColumn(false);
+      }
+    }
 
   return (
     <div key={coluna.id} className={style.board}>
@@ -23,7 +32,14 @@ export default function Column({ coluna, showTopic, showAddTopic, setColumnIdFor
             className={style.trash_button}
             onClick={() => deleteColumnFunction(coluna.id)}
           >
-            🗑️
+            {loadDeleteColumn ? (
+              <div className={"spinner-border spinner-border-sm text-white"} role="status">
+                <span className={"visually-hidden"}></span>
+              </div>
+            ) : (
+              <span>🗑️</span>
+            )}
+            
           </button>
         </div>
 
