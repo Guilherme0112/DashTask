@@ -4,6 +4,7 @@ import CreateColumn from "../components/Painel/CreateColumn";
 import CreateTopic from "../components/Painel/CreateTopic";
 import EditTopic from "../components/Painel/EditorOrShowTopic";
 import Column from "../components/Painel/Column";
+import style from "../css/Painel.module.css";
 
 function Painel() {
   // Tópicos
@@ -53,21 +54,16 @@ function Painel() {
   return (
     <>
       {/* Template criar coluna */}
-      <section className="d-flex justify-content-start align-items-center flex-wrap w-100">
-        {/* Dialog criar colunas */}
-        {newColumn && (
-          <CreateColumn
-            setNewColumn={setNewColumn}
-            setExistsColumn={setExistsColumn}
-          />
-        )}
-        <div className={"w-100 d-flex align-items-start justify-content-start"}>
-          {/* Botão para abrir dialog de criar colunas */}
-          <button
-            onClick={() => showNewColumn()}
-            className="btn btn-primary m-3">
-            Criar Coluna
-          </button>
+      <section className="d-flex justify-content-start align-items-center flex-wrap w-100 position-fixed pt-5">
+
+        {/* Botão para abrir dialog de criar colunas */}
+        <button
+          onClick={() => showNewColumn()}
+          className="btn btn-primary mb-n1 ms-1 m-3"
+          style={{marginTop: "70px"}}>
+          Criar Coluna
+        </button>
+        <div className={`w-100 d-flex align-items-start justify-content-start ${style.board}`}>
 
           {/* Renderização as colunas existentes */}
           {loadColumns ? (
@@ -91,6 +87,21 @@ function Painel() {
         </div>
       </section>
 
+
+      {/* Dialog criar colunas */}
+      {newColumn && (
+        <CreateColumn
+          setNewColumn={setNewColumn}
+          setExistsColumn={setExistsColumn}
+        />
+      )}
+
+      {/* Criar novo tópico */}
+      {addTopic && <CreateTopic 
+                    showAddTopic={showAddTopic}
+                    column_id={columnIdForTopic} 
+                    setExistsColumn={setExistsColumn}/> }
+
       {/* Editar/Mostrar detalhes do tópico */}
       {showTopicDetails && (
         <EditTopic
@@ -98,14 +109,11 @@ function Painel() {
           editTopic={editTopic}
           enableEditTopic={enableEditTopic}
           selectedTopic={selectedTopic}
+          setExistsColumn={setExistsColumn}
         />
       )}
 
-      {/* Criar novo tópico */}
-      {addTopic && <CreateTopic 
-                    showAddTopic={showAddTopic}
-                    columnId={columnIdForTopic} 
-                    setExistsColumn={setExistsColumn}/> }
+      
     </>
   );
 }

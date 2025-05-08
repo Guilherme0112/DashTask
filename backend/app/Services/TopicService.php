@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Topic;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -33,9 +34,14 @@ class TopicService {
         }
     }   
 
-    // public function delete(): void
-    // {
-
-    // }
+    public function delete(int $id): void
+    {
+        try {
+            $topic = Topic::findOrFail($id);
+            $topic->delete();
+        } catch (Exception | ModelNotFoundException $e) {
+            throw $e;
+        }
+    }
 
 }

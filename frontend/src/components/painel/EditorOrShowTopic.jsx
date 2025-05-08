@@ -1,23 +1,92 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
+import { deleteTopic, updateTopic } from "../../js/painel/crudTopic";
 
-export default function EditTopic({showTopic, enableEditTopic, editTopic, selectedTopic}) {
+export default function EditTopic({
+  showTopic,
+  enableEditTopic,
+  editTopic,
+  selectedTopic,
+  setExistsColumn
+}) {
+  
+  const [topicTitle, setTopicTitle] = useState(selectedTopic.name);
+  const [topicDescription, setTopicDescription] = useState(selectedTopic.description);
+  const [topicValue, setTopicValue] = useState(selectedTopic.value);
 
-  const [topicTitle, setTopicTitle] = useState("");
+  const [loadUpdate, setLoadUpdate] = useState(false);
+  const [loadDelete, setLoadDelete] = useState(false);
   const [errorTopic, setErrorTopic] = useState("");
+
+
+  async function submit() {
+    
+    setLoadUpdate(true);
+
+    const topic = {
+      name: topicTitle,
+      description: topicDescription,
+      value: topicValue,
+      columnId: selectedTopic.column_id
+    }
+    try {
+
+      const data = await updateTopic(topic, selectedTopic.id);
+
+      setExistsColumn(prevColumns =>
+        prevColumns.map(col =>
+          String(col.id) === data.column_id
+            ? {
+                ...col,
+                topics: (col.topics || []).map(topic =>
+                  topic.id === data.id ? { ...data, ...topic } : topic
+                )
+              }
+            : col
+        )
+      );
+
+    } catch (error) {
+        throw error;
+    } finally {
+      setLoadUpdate(false);
+    }
+  }
+
+  async function submitDelete() {
+    
+    try {
+      setLoadDelete(true);
+      await deleteTopic(selectedTopic.id);
+      
+      setExistsColumn(prevColumns => 
+        prevColumns.map(col =>
+          String(col.id) === String(selectedTopic.column_id)
+          ? {
+            ...col,
+            topics: (col.topics || []).filter(topic => String(topic.id) !== String(selectedTopic.id))
+          }
+          : col
+        )
+      );
+
+      showTopic();
+
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoadDelete(false);
+    }
+  }
 
   return (
     <div className={style.background_container}>
       <div className={style.container_add_topic}>
         {/* Botão para fechar */}
         <div className={`d-flex justify-content-end`}>
-          <p
-            onClick={showTopic}
-            className="fs-3 fw-bold"
-            style={{ cursor: "pointer" }}
-          >
-            ×
-          </p>
+          <p onClick={showTopic}
+             className="fs-3 fw-bold"
+             style={{ cursor: "pointer" }}>×</p>
         </div>
 
         {/* Botão de editar/salvar */}
@@ -25,14 +94,37 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic, select
           style={{ cursor: "pointer" }}
           className={`d-flex justify-content-end`}
         >
-          <p
-            onClick={enableEditTopic}
-            className={`btn ${
-              editTopic ? "btn-success" : "btn-primary"
-            } fw-bold`}
-          >
-            {editTopic ? "✓" : "✎"}
-          </p>
+
+          <button className={"btn btn-danger m-2"} onClick={submitDelete}>
+            {loadDelete ? (
+              <div className={"spinner-border spinner-border-sm text-white"} role="status">
+                <span className={"visually-hidden"}></span>
+              </div>
+            ) : (
+              "🗑️"
+            )}
+          </button>
+
+          {editTopic ? (
+            <button onClick={() => {submit(), enableEditTopic()}} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`}>
+               {loadUpdate ? (
+                <div className={"spinner-border spinner-border-sm text-white"} role="status">
+                  <span className={"visually-hidden"}></span>
+                </div>
+              ) : (
+                "✓"
+              )}</button>
+          ) : (
+            <button onClick={enableEditTopic} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`}>
+                {loadUpdate ? (
+                  <div className={"spinner-border spinner-border-sm text-white"} role="status">
+                    <span className={"visually-hidden"}></span>
+                  </div>
+              ) : (
+                "✎"
+              )}
+            </button>
+          )}
         </div>
 
         {/* Título do tópico */}
@@ -44,7 +136,7 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic, select
             } ${errorTopic ? "is-invalid" : ""}`}
             id="floatingInput"
             placeholder="Titulo do tópico"
-            value={selectedTopic.name}
+            value={topicTitle}
             readOnly={!editTopic}
             onChange={(e) => setTopicTitle(e.target.value)}
           />
@@ -64,8 +156,9 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic, select
             id="floatingTextarea"
             placeholder="Descrição"
             readOnly={!editTopic}
-            value={selectedTopic.description}
+            value={topicDescription ?? ""}
             style={{ maxHeight: "200px", height: "auto" }}
+            onChange={(e) => setTopicDescription(e.target.value)}
           ></textarea>
           <label htmlFor="floatingTextarea">Descrição</label>
         </div>
@@ -81,7 +174,8 @@ export default function EditTopic({showTopic, enableEditTopic, editTopic, select
               } ${errorTopic ? "is-invalid" : ""}`}
               id="floatingInputGroup1"
               readOnly={!editTopic}
-              value={selectedTopic.value}
+              value={topicValue ?? ""}
+              onChange={(e) => setTopicValue(e.target.value)}
               placeholder="Valor"
             />
             <label htmlFor="floatingInputGroup1">Valor</label>

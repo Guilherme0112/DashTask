@@ -15,7 +15,7 @@ class ColumnController extends Controller
 {
     public function index(): JsonResponse
     {
-        $columns = ColumnForTopic::with('topics')->get();
+        $columns = ColumnForTopic::with('topics')->latest()->get();
         return response()->json($columns);
     }
 

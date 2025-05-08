@@ -24,7 +24,7 @@ export default function Column({ coluna, showTopic, showAddTopic, setColumnIdFor
     }
 
   return (
-    <div key={coluna.id} className={style.board}>
+    <div key={coluna.id}>
       <div className={style.column}>
         <div className={style.column_header}>
           <span>{coluna.name}</span>

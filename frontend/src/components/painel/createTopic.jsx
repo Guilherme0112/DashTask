@@ -1,5 +1,6 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
+import { saveTopic } from "../../js/painel/crudTopic";
 
 /** Componente de criação de tópicos
  * 
@@ -7,12 +8,12 @@ import style from "../../css/Painel.module.css";
  * @param columnId Id da coluna que receberá o tópico
  * @param setExistsColumn Colunas existentes até o momento 
  */
-export default function CreateTopic({ showAddTopic, columnId, setExistsColumn }) {
+export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }) {
 
   // Valores do tópico
+  const [topicTitle, setTopicTitle] = useState("");
   const [topicDescription, setTopicDescription] = useState("");
   const [topicValue, setTopicValue] = useState("");
-  const [topicTitle, setTopicTitle] = useState("");
   // Erro do tópico
   const [errorTopic, setErrorTopic] = useState("");
 
@@ -24,34 +25,20 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
 
     setLoadCreateTopic(true);
 
-    // Construção do formulário
-    const formData = new FormData();
-    formData.append("name", topicTitle);
-    formData.append("description", topicDescription);
-    formData.append("value", topicValue);
-    formData.append("column_id", columnId);
-
     try {
       
-      
-      // Requisição para criar
-      const res = await fetch("http://localhost:8000/api/topics", {
-        method: "POST",
-        credentials: "include",
-        body: formData
-      });
-
-      // Erro na requisição
-      if(!res.ok){
-        const data = await res.json();
-        setErrorTopic(data.errors || "Erro ao criar tópico");
-        showAddTopic();
-        return;
+      // Enviar os dados em uma array
+      const topic = {
+        name: topicTitle,
+        description: topicDescription,
+        value: topicValue,
+        columnId: column_id
       }
+
+      const data = await saveTopic(topic);
 
       // Pega o tópico retornado e adiciona na array topics onde o id da
       // coluna retornada corresponda ao id da coluna da array
-      const data = await res.json();
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
           String(col.id) === data.column_id
@@ -60,12 +47,11 @@ export default function CreateTopic({ showAddTopic, columnId, setExistsColumn })
         )
       );
 
-      showAddTopic();
-
     } catch (error) {
-      setErrorTopic("Ocorreu algum erro. Tente novamente mais tarde");
+      setErrorTopic(error || "Ocorreu algum erro. Tente novamente mais tarde");
       console.log(error);
     } finally {
+      showAddTopic();
       setLoadCreateTopic(false);
     }
   }

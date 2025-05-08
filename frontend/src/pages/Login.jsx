@@ -40,7 +40,7 @@ function Login() {
 
   return (
     // Início do formulário
-    <main className={"h-100 d-flex align-items-center flex-wrap"}>
+    <main className={"h-100 d-flex align-items-center justify-content-center flex-wrap"}>
       <form
         className="border p-5 rounded shadow"
         style={{ width: "400px" }}

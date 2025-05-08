@@ -32,14 +32,33 @@ class TopicController extends Controller
         
     }
 
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, int $id, TopicService $topicService) : JsonResponse
     {
-        return response()->json($request);
+
+        try {
+
+            $topic = $topicService->save($request, $id);
+            return response()->json($topic);
+
+       } catch (Exception | ModelNotFoundException | ValidationException $e) {
+
+            return response()->json(["errors" => $e->getMessage()]);
+        }
+
+        
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id, TopicService $topicService): JsonResponse
     {   
-        return response()->json($id);
+        try {
+
+            $topicService->delete($id);
+            return response()->json(["success" => "Tópico deletado com sucesso"], 200);
+
+       } catch (Exception | ModelNotFoundException | ValidationException $e) {
+
+            return response()->json(["errors" => $e->getMessage()]);
+        }
     }
 
 }

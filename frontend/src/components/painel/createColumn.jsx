@@ -23,7 +23,7 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
       const res = await saveColumn(columnTitle);
 
       setNewColumn(false);
-      setExistsColumn((prev) => [...prev, res]);
+      setExistsColumn((prev) => [res, ...prev]);
       setColumnTitle("");
     } catch (error) {
       console.error(error);
