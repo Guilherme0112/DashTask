@@ -47,10 +47,10 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
             : col
         )
       );
+      
       showAddTopic();
 
     } catch (error) {
-      console.log(error);
       setErrorTopic(error.errors.name[0]);
     } finally {
       setLoadCreateTopic(false);

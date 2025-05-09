@@ -48,7 +48,7 @@ export async function updateTopic(topic, id){
     const formData = new FormData();
     formData.append("name", topic.name);
     formData.append("description", topic.description);
-    formData.append("value", unmaskValue(topic.value));
+    formData.append("value", unmaskValue(topic.value || '0.00'));
     formData.append("column_id", topic.columnId);
     formData.append("_method", "PATCH");
     
