@@ -4,43 +4,60 @@ import { useAuth } from "../components/Auth/AuthContext";
 
 function Login() {
   const [error, setError] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [loadLogin, setLoadLogin] = useState(false);
+
   const navigate = useNavigate();
   const { setAuthorization } = useAuth();
 
   // Submit login
   async function submit(event) {
+
+    setLoadLogin(true);
     event.preventDefault();
 
-    // Cria o objeto do formulário e adiciona os valroes
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
+    try {
+      // Cria o objeto do formulário e adiciona os valroes
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
 
-    // Faz a requisição
-    const res = await fetch("http://localhost:8000/api/login", {
-      method: "POST",
-      credentials: "include",
-      body: formData,
-    });
+      // Faz a requisição
+      const res = await fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
-    // Verifica se retornou erro
-    if (!res.ok) {
-      const errorData = await res.json();
-      setError(errorData.message || "Erro ao fazer login");
-      return;
+      // Verifica se retornou erro
+      if (!res.ok) {
+        const errorData = await res.json();
+        setError(errorData.message || "Erro ao fazer login");
+        return;
+      }
+
+      setAuthorization(true);
+
+      // Se não teve erro, redireciona para o painel
+      navigate("/painel");
+    } catch (error) {
+
+      console.log(error)
+    } finally {
+      setLoadLogin(false);
     }
-
-    setAuthorization(true);
-
-    // Se não teve erro, redireciona para o painel
-    navigate("/painel");
   }
 
   return (
     // Início do formulário
-    <main className={"h-100 d-flex align-items-center justify-content-center flex-wrap"}>
+    <main
+      className={
+        "h-100 d-flex align-items-center justify-content-center flex-wrap"
+      }
+    >
       <form
         className="border p-5 rounded shadow"
         style={{ width: "400px" }}
@@ -85,8 +102,14 @@ function Login() {
         )}
 
         {/* Botão para fazer login */}
-        <button type="submit" className="btn btn-primary">
-          Entrar
+        <button type="submit" className="btn btn-primary" disabled={loadLogin}>
+          {loadLogin ? (
+            <div className={"spinner-border spinner-border-sm text-white"} role="status">
+              <span className={"visually-hidden"}></span>
+            </div>
+          ) : (
+            "Entrar"
+          )}
         </button>
       </form>
     </main>

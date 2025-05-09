@@ -13,7 +13,7 @@ class TopicService {
     public function save(Request $request, ?int $id = null): Topic
     {
         try {
-            
+
             $validated = $request->validate([
                 "name" => "required|min:2|max:50",
                 "description" => "nullable|string",

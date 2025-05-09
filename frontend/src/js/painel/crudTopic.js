@@ -1,3 +1,5 @@
+import { unmaskValue } from "../utils/maskValue";
+
 /** Função que salva um tópico
  * 
  * @param {*} topic Array que tem os dados do tópico
@@ -8,7 +10,7 @@ export async function saveTopic(topic){
     const formData = new FormData();
     formData.append("name", topic.name);
     formData.append("description", topic.description);
-    formData.append("value", topic.value);
+    formData.append("value", unmaskValue(topic.value));
     formData.append("column_id", topic.columnId);
     
     try {
@@ -22,8 +24,8 @@ export async function saveTopic(topic){
 
         // Em caso de erro
         if(!res.ok){
-            const data = await res.json();
-            throw new Error(data.errors || "Erro ao criar tópico");
+            const error = await res.json();
+            throw error;
         }
         
         // Retorna o valor criado
@@ -46,13 +48,13 @@ export async function updateTopic(topic, id){
     const formData = new FormData();
     formData.append("name", topic.name);
     formData.append("description", topic.description);
-    formData.append("value", topic.value);
+    formData.append("value", unmaskValue(topic.value));
     formData.append("column_id", topic.columnId);
     formData.append("_method", "PATCH");
     
     try {
 
-        // Requisição para criar tópica
+        // Requisição para atualizar tópico
         const res = await fetch(`http://localhost:8000/api/topics/${id}`, {
             method: "POST",
             credentials: "include",
@@ -61,8 +63,8 @@ export async function updateTopic(topic, id){
 
         // Em caso de erro
         if(!res.ok){
-            const data = await res.json();
-            throw new Error(data.errors || "Erro ao atualizar tópico");
+            const error = await res.json();
+            throw error;
         }
         
         // Retorna o valor criado
@@ -91,8 +93,8 @@ export async function deleteTopic(id){
 
         // Em caso de erro
         if(!res.ok){
-            const data = await res.json();
-            throw new Error(data.errors || "Erro ao deletar tópico");
+            const error = await res.json();
+            throw error;
         }
 
     } catch (error) {

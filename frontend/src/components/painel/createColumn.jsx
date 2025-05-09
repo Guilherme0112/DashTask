@@ -62,7 +62,7 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
           <label htmlFor="floatingInput">Titulo da coluna</label>
 
           {/* Botão de submit */}
-          <button onClick={submitColumn} className="btn btn-primary mt-3">
+          <button onClick={submitColumn} className="btn btn-primary mt-3" disabled={loadCreateColumn}>
             {loadCreateColumn ? (
               <div className={"spinner-border spinner-border-sm text-white"} role="status">
                 <span className={"visually-hidden"}></span>

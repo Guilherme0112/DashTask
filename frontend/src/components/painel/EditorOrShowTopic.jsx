@@ -1,6 +1,7 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
 import { deleteTopic, updateTopic } from "../../js/painel/crudTopic";
+import { maskValue } from "../../js/utils/maskValue";
 
 export default function EditTopic({
   showTopic,
@@ -39,7 +40,7 @@ export default function EditTopic({
             ? {
                 ...col,
                 topics: (col.topics || []).map(topic =>
-                  topic.id === data.id ? { ...data, ...topic } : topic
+                  topic.id === data.id ? { ...topic, ...data } : topic
                 )
               }
             : col
@@ -53,12 +54,16 @@ export default function EditTopic({
     }
   }
 
+  // Deletar tópico
   async function submitDelete() {
     
     try {
+
       setLoadDelete(true);
+
       await deleteTopic(selectedTopic.id);
       
+      // Remove o tópico da array de colunas
       setExistsColumn(prevColumns => 
         prevColumns.map(col =>
           String(col.id) === String(selectedTopic.column_id)
@@ -95,7 +100,7 @@ export default function EditTopic({
           className={`d-flex justify-content-end`}
         >
 
-          <button className={"btn btn-danger m-2"} onClick={submitDelete}>
+          <button className={"btn btn-danger m-2"} onClick={submitDelete} disabled={loadDelete}>
             {loadDelete ? (
               <div className={"spinner-border spinner-border-sm text-white"} role="status">
                 <span className={"visually-hidden"}></span>
@@ -106,7 +111,7 @@ export default function EditTopic({
           </button>
 
           {editTopic ? (
-            <button onClick={() => {submit(), enableEditTopic()}} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`}>
+            <button onClick={() => {submit(); enableEditTopic();}} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`} disabled={loadUpdate}>
                {loadUpdate ? (
                 <div className={"spinner-border spinner-border-sm text-white"} role="status">
                   <span className={"visually-hidden"}></span>
@@ -115,7 +120,7 @@ export default function EditTopic({
                 "✓"
               )}</button>
           ) : (
-            <button onClick={enableEditTopic} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`}>
+            <button onClick={enableEditTopic} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`} disabled={loadUpdate}>
                 {loadUpdate ? (
                   <div className={"spinner-border spinner-border-sm text-white"} role="status">
                     <span className={"visually-hidden"}></span>
@@ -174,8 +179,8 @@ export default function EditTopic({
               } ${errorTopic ? "is-invalid" : ""}`}
               id="floatingInputGroup1"
               readOnly={!editTopic}
-              value={topicValue ?? ""}
-              onChange={(e) => setTopicValue(e.target.value)}
+              value={maskValue(topicValue) ?? ""}
+              onChange={(e) => setTopicValue(maskValue(e.target.value))}
               placeholder="Valor"
             />
             <label htmlFor="floatingInputGroup1">Valor</label>

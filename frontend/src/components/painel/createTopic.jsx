@@ -1,6 +1,7 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
 import { saveTopic } from "../../js/painel/crudTopic";
+import { maskValue } from "../../js/utils/maskValue";
 
 /** Componente de criação de tópicos
  * 
@@ -46,12 +47,12 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
             : col
         )
       );
+      showAddTopic();
 
     } catch (error) {
-      setErrorTopic(error || "Ocorreu algum erro. Tente novamente mais tarde");
       console.log(error);
+      setErrorTopic(error.errors.name[0]);
     } finally {
-      showAddTopic();
       setLoadCreateTopic(false);
     }
   }
@@ -86,7 +87,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
           <label htmlFor="floatingInput">Titulo do tópico</label>
 
           {errorTopic && (
-            <div className="invalid-feedback">Mensagem de erro</div>
+            <div className="invalid-feedback">{errorTopic}</div>
           )}
         </div>
 
@@ -112,14 +113,14 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
               className="form-control"
               id="floatingInputGroup1"
               placeholder="Valor"
-              value={topicValue}
-              onChange={(e) => setTopicValue(e.target.value)}
+              value={maskValue(topicValue)}
+              onChange={(e) => setTopicValue(maskValue(e.target.value))}
             />
             <label htmlFor="floatingInputGroup1">Valor</label>
           </div>
         </div>
 
-        <button className="btn btn-primary" onClick={() => submit()}>
+        <button className="btn btn-primary" onClick={() => submit()} disabled={loadCreateTopic}>
           {loadCreateTopic ? (
             <div className={"spinner-border spinner-border-sm text-white"} role="status">
               <span className={"visually-hidden"}></span>

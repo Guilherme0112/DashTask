@@ -67,22 +67,26 @@ function Painel() {
 
           {/* Renderização as colunas existentes */}
           {loadColumns ? (
-            <div className={"ms-5 mt-3"}>
+            <div className={"m-2 w-100 text-center"}>
               <div className={"spinner-border"} role="status">
                 <span className={"visually-hidden"}></span>
               </div>
             </div>
           ) : (
-            existsColumn.length > 0 && existsColumn.map((coluna, index) => (
-              <Column 
-                key={coluna.id}
-                coluna={coluna}
-                showTopic={showTopic}
-                showAddTopic={showAddTopic}
-                setColumnIdForTopic={setColumnIdForTopic}
-                setExistsColumn={setExistsColumn}
-              />
-            ))
+            existsColumn.length > 0 ? (
+              existsColumn.map((coluna, index) => (
+                <Column 
+                  key={coluna.id}
+                  coluna={coluna}
+                  showTopic={showTopic}
+                  showAddTopic={showAddTopic}
+                  setColumnIdForTopic={setColumnIdForTopic}
+                  setExistsColumn={setExistsColumn}
+                />
+              )   
+          )) : (
+            <h5 className={"w-100 m-2 text-center"}>Nenhuma coluna encontrada</h5>
+          )
           )}
         </div>
       </section>

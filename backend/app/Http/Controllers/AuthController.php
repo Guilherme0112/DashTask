@@ -52,7 +52,6 @@ class AuthController extends Controller
                          ->withCookie(cookie()->forget('auth'));
     }
 
-    // Caso o usuário não esteja autenticado
     return response()->json(['message' => 'Não autenticado'], 401);
 }
 

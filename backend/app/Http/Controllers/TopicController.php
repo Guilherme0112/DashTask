@@ -25,9 +25,13 @@ class TopicController extends Controller
             $topic = $topicService->save($request, null);
             return response()->json($topic);
 
-        } catch (Exception | ModelNotFoundException | ValidationException $e) {
+        } catch (ValidationException $e) {
 
-            return response()->json(["errors" => $e->getMessage()]);
+            return response()->json(["errors" => $e->errors()], 400);
+
+        } catch (Exception | ModelNotFoundException  $e) {
+
+            return response()->json(["errors" => $e->getMessage()], 500);
         }
         
     }
@@ -40,9 +44,13 @@ class TopicController extends Controller
             $topic = $topicService->save($request, $id);
             return response()->json($topic);
 
-       } catch (Exception | ModelNotFoundException | ValidationException $e) {
+        } catch (ValidationException $e) {
 
-            return response()->json(["errors" => $e->getMessage()]);
+            return response()->json(["errors" => $e->errors()], 400);
+
+        } catch (Exception | ModelNotFoundException  $e) {
+
+            return response()->json(["errors" => $e->getMessage()], 500);
         }
 
         
@@ -55,10 +63,10 @@ class TopicController extends Controller
             $topicService->delete($id);
             return response()->json(["success" => "Tópico deletado com sucesso"], 200);
 
-       } catch (Exception | ModelNotFoundException | ValidationException $e) {
+        } catch (Exception | ModelNotFoundException $e) {
 
-            return response()->json(["errors" => $e->getMessage()]);
-        }
+            return response()->json(["errors" => $e->getMessage()], 500);
+        }   
     }
 
 }

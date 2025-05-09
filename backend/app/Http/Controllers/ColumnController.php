@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\ColumnForTopic;
 use App\Services\ColumnForTopicsService;
 use Exception;
@@ -39,10 +38,15 @@ class ColumnController extends Controller
             // Retorna o registro salvo no banco de dados
             return response()->json($column);
 
-        } catch (ValidationException | Exception $e) {
+        } catch (ValidationException $e) {
 
             // Retorna as mensagens de erro das exceptions
-            return response()->json(["errors" => $e->getMessage()]);
+            return response()->json(["errors" => $e->errors()], 400);
+        
+        } catch (Exception $e) {
+
+            // Retorna as mensagens de erro das exceptions
+            return response()->json(["errors" => $e->getMessage()], 500);
         }
     }
 
@@ -68,14 +72,19 @@ class ColumnController extends Controller
             // Retorna o registro salvo no banco de dados
             return response()->json($column);
 
-        } catch (ValidationException | Exception $e) {
+        } catch (ValidationException $e) {
+            return response()->json(["errors" => $e->errors()], 400);
 
-            // Retorna as mensagens de erro das exceptions
-            return response()->json(["errors" => $e->getMessage()]);
+        } catch (Exception $e) {
+            return response()->json(["errors" => $e->getMessage()], 500);
         }
     }
 
-
+    /** Método que deleta uma coluna e seus tópicos
+     * 
+     * @param int Id da coluna
+     * @param ColumnForTopicsService Service da coluna
+     */
     public function destroy(int $id, ColumnForTopicsService $columnForTopicsService): JsonResponse
     {
         try {
@@ -86,7 +95,7 @@ class ColumnController extends Controller
 
         } catch (Exception | ModelNotFoundException $e) {
 
-            return response()->json(["errors" => "Não foi possível deletar esta coluna"]);
+            return response()->json(["errors" => "Não foi possível deletar esta coluna"], 400);
         }
     }
 }

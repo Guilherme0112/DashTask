@@ -11,6 +11,7 @@
     box-shadow: 0 0 7px rgba(0,0,0,0.3);
     transition: .3s;
     backdrop-filter: blur(40px);
+    z-index: 2;
 }
 .menu_hidden{
     left: -250px;
@@ -20,7 +21,7 @@
     position: fixed;
     left: 10px;
     top: 10px;
-    z-index: 2;
+    z-index: 3;
     cursor: pointer;
 }
 .menu div {

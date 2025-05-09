@@ -15,8 +15,8 @@ export async function fecthColumns(){
 
         // Se houver erros lança a exception
         if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.errors || "Erro ao deletar coluna coluna");
+            const error = await res.json();
+            throw error;
         }
     
         // Retorna os dados
@@ -49,8 +49,8 @@ export async function saveColumn(nameColumn) {
 
     // Em caso de erro
     if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.errors || "Erro ao deletar salvar coluna");
+        const error = await res.json();
+        throw error;
     }
 
     return await res.json();
@@ -78,8 +78,8 @@ export async function deleteColumn(id) {
 
     // Verifica se ocorreu tudo certo, se não ele lança a exceção
     if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.errors || "Erro ao deletar coluna coluna");
+        const error = await res.json();
+        throw error
     }
 
     return await res.json();
