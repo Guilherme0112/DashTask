@@ -21,7 +21,7 @@ function App() {
           <Route path="/painel" element={ <ProtectedRoutes>
                                             <Painel />
                                           </ProtectedRoutes> } />
-          <Route path="/financas" element={<ProtectedRoutes>
+          <Route path="/financas/:id" element={<ProtectedRoutes>
                                             <Financas />
                                           </ProtectedRoutes>} />
         </Routes>

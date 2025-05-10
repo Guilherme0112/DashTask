@@ -28,8 +28,6 @@ services:
       - postgres
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/var/www
     working_dir: /var/www
     command: |
       bash -c "

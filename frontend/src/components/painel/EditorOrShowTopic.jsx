@@ -1,24 +1,23 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
-import { deleteTopic, updateTopic } from "../../js/painel/crudTopic";
+import { deleteTopic, saveTopic } from "../../js/painel/crudTopic";
 import { maskValue } from "../../js/utils/maskValue";
 
 export default function EditTopic({
   showTopic,
-  enableEditTopic,
   editTopic,
+  enableEditTopic,
   selectedTopic,
   setExistsColumn
 }) {
-  
-  const [topicTitle, setTopicTitle] = useState(selectedTopic.name);
-  const [topicDescription, setTopicDescription] = useState(selectedTopic.description);
-  const [topicValue, setTopicValue] = useState(selectedTopic.value);
+
+  const [topicTitle, setTopicTitle] = useState(selectedTopic.name ?? "");
+  const [topicDescription, setTopicDescription] = useState(selectedTopic.description ?? "");
+  const [topicValue, setTopicValue] = useState(selectedTopic.value ?? "0,00");
 
   const [loadUpdate, setLoadUpdate] = useState(false);
   const [loadDelete, setLoadDelete] = useState(false);
   const [errorTopic, setErrorTopic] = useState("");
-
 
   async function submit() {
     
@@ -27,12 +26,13 @@ export default function EditTopic({
     const topic = {
       name: topicTitle,
       description: topicDescription,
-      value: topicValue,
+      value: topicValue || "0,00",
       columnId: selectedTopic.column_id
     }
+
     try {
 
-      const data = await updateTopic(topic, selectedTopic.id);
+      const data = await saveTopic(topic, selectedTopic.id);
 
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
@@ -47,8 +47,11 @@ export default function EditTopic({
         )
       );
 
+      enableEditTopic()
+
     } catch (error) {
-        throw error;
+      console.log(error)
+      setErrorTopic(error.errors.name[0]);
     } finally {
       setLoadUpdate(false);
     }
@@ -78,7 +81,8 @@ export default function EditTopic({
       showTopic();
 
     } catch (error) {
-      throw error;
+      console.log(error)
+      setErrorTopic(error);
     } finally {
       setLoadDelete(false);
     }
@@ -111,7 +115,7 @@ export default function EditTopic({
           </button>
 
           {editTopic ? (
-            <button onClick={() => {submit(); enableEditTopic();}} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`} disabled={loadUpdate}>
+            <button onClick={submit} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`} disabled={loadUpdate}>
                {loadUpdate ? (
                 <div className={"spinner-border spinner-border-sm text-white"} role="status">
                   <span className={"visually-hidden"}></span>
@@ -148,20 +152,18 @@ export default function EditTopic({
           <label htmlFor="floatingInput">Titulo do tópico</label>
 
           {errorTopic && (
-            <div className="invalid-feedback">Mensagem de erro</div>
+            <div className="invalid-feedback">{errorTopic}</div>
           )}
         </div>
 
         {/* Descrição do tópico */}
         <div className="form-floating mb-3">
           <textarea
-            className={`${
-              editTopic ? "form-control" : "form-control-plaintext"
-            } ${errorTopic ? "is-invalid" : ""}`}
+            className={`${editTopic ? "form-control" : "form-control-plaintext"}`}
             id="floatingTextarea"
             placeholder="Descrição"
             readOnly={!editTopic}
-            value={topicDescription ?? ""}
+            value={topicDescription ?? ""   }
             style={{ maxHeight: "200px", height: "auto" }}
             onChange={(e) => setTopicDescription(e.target.value)}
           ></textarea>
@@ -174,12 +176,10 @@ export default function EditTopic({
           <div className="form-floating">
             <input
               type="text"
-              className={`${
-                editTopic ? "form-control" : "form-control-plaintext"
-              } ${errorTopic ? "is-invalid" : ""}`}
+              className={`${editTopic ? "form-control" : "form-control-plaintext"}`}
               id="floatingInputGroup1"
               readOnly={!editTopic}
-              value={maskValue(topicValue) ?? ""}
+              value={maskValue(topicValue)}
               onChange={(e) => setTopicValue(maskValue(e.target.value))}
               placeholder="Valor"
             />

@@ -12,12 +12,31 @@ use Illuminate\Validation\ValidationException;
 
 class ColumnController extends Controller
 {
+    /** Método que busca todas as colunas
+     */
     public function index(): JsonResponse
     {
         $columns = ColumnForTopic::with('topics')->latest()->get();
         return response()->json($columns);
     }
 
+    /** Método que busca uma coluna com seus tópicos
+     * 
+     * @param int Id da coluna
+     */
+    public function show(int $id): JsonResponse
+    {
+        try {
+            $colum = ColumnForTopic::with('topics')->findOrFail($id);
+            return response()->json($colum);
+
+        } catch (ModelNotFoundException $e) {
+            return response()->json(["errors" => "Não existe dados com o id $id"], 400);
+        } catch (Exception $e) {
+            return response()->json(["errors" => $e->getMessage()], 500);
+        }
+        
+    }
     /** Método que salva uma coluna no banco de dados
      *
      * @param Request Requisição vinda do front

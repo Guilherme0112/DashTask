@@ -12,7 +12,7 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
   const [loadCreateColumn, setLoadCreateColumn] = useState(false)
 
   const [columnTitle, setColumnTitle] = useState("");
-  const [errorColumn, setErrorColumn] = useState(false);
+  const [errorColumn, setErrorColumn] = useState("");
 
   // Criar colunas
   const submitColumn = async () => {
@@ -26,8 +26,8 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
       setExistsColumn((prev) => [res, ...prev]);
       setColumnTitle("");
     } catch (error) {
-      console.error(error);
-      setErrorColumn(true);
+      console.error(error)
+      setErrorColumn(error.errors.name[0]);
     } finally {
       setLoadCreateColumn(false);
     }
@@ -53,13 +53,19 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
         <div className="form-floating mb-3">
           <input
             type="email"
-            className={"form-control"}
+            className={`form-control ${errorColumn ? "is-invalid" : ""}`}
             id="floatingInput"
             placeholder="Titulo do tópico"
             value={columnTitle}
             onChange={(e) => setColumnTitle(e.target.value)}
           />
           <label htmlFor="floatingInput">Titulo da coluna</label>
+
+
+          {/* Exibir erros */}
+          {errorColumn && (
+            <div className="invalid-feedback">{errorColumn}</div>
+          )}
 
           {/* Botão de submit */}
           <button onClick={submitColumn} className="btn btn-primary mt-3" disabled={loadCreateColumn}>
@@ -73,10 +79,6 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
             
           </button>
 
-          {/* Exibir erros */}
-          {errorColumn && (
-            <div className="invalid-feedback">Mensagem de erro</div>
-          )}
         </div>
       </div>
     </div>

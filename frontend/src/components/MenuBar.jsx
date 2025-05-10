@@ -46,7 +46,7 @@ function MenuBar() {
             <>
               <Link to="/painel">Painel</Link>
               <Link to="/financas">Finanças</Link>
-              <button onClick={logout}>Sair</button>
+              <button onClick={logout} className={"btn text-primary"}>Sair</button>
             </>
           ) : (
             <Link to="/">Entrar</Link>

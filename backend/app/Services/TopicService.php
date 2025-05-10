@@ -17,7 +17,7 @@ class TopicService {
             $validated = $request->validate([
                 "name" => "required|min:2|max:50",
                 "description" => "nullable|string",
-                "value" => "nullable|numeric|min:0",
+                "value" => "nullable|numeric",
                 "column_id" => "required|exists:column_for_topics,id"
             ]);
 

@@ -24,14 +24,15 @@ Route::post("/logout", [AuthController::class,"logout"])->middleware([ValidateAu
 
 // Colunas
 Route::get("/column", [ColumnController::class, "index"])->middleware([ValidateAuthTokenFromCookie::class])->name("column.index");
+Route::get("/column/{id}", [ColumnController::class, "show"])->middleware([ValidateAuthTokenFromCookie::class])->name("column.show");
 Route::post("/column", [ColumnController::class,"store"])->middleware([ValidateAuthTokenFromCookie::class])->name("column.store");
 Route::patch("/column/{id}", [ColumnController::class,"update"])->middleware([ValidateAuthTokenFromCookie::class])->name("column.update");
 Route::delete("/column/{id}", [ColumnController::class,"destroy"])->middleware([ValidateAuthTokenFromCookie::class])->name("column.destroy");
 
 // Tópicos
-Route::get("/topics", [TopicController::class,"index"])->name("topic.index");
-Route::post("/topics", [TopicController::class,"store"])->name("topic.store");
-Route::patch("/topics/{id}", [TopicController::class,"update"])->name("topic.update");
-Route::delete("/topics/{id}", [TopicController::class,"destroy"])->name("topic.destroy");
+Route::get("/topics", [TopicController::class,"index"])->middleware([ValidateAuthTokenFromCookie::class])->name("topic.index");
+Route::post("/topics", [TopicController::class,"store"])->middleware([ValidateAuthTokenFromCookie::class])->name("topic.store");
+Route::patch("/topics/{id}", [TopicController::class,"update"])->middleware([ValidateAuthTokenFromCookie::class])->name("topic.update");
+Route::delete("/topics/{id}", [TopicController::class,"destroy"])->middleware([ValidateAuthTokenFromCookie::class]) ->name("topic.destroy");
 
 

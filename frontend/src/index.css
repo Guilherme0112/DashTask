@@ -33,3 +33,6 @@ input:-webkit-autofill:focus {
 input:-webkit-autofill {
   -webkit-text-fill-color: #212529 !important;
 }
+button:focus{
+  outline: 0;
+}

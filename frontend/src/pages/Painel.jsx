@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fecthColumns } from "../js/painel/crudColumn";
+import { fetchColumns } from "../js/painel/crudColumn";
 import CreateColumn from "../components/Painel/CreateColumn";
 import CreateTopic from "../components/Painel/CreateTopic";
 import EditTopic from "../components/Painel/EditorOrShowTopic";
@@ -36,10 +36,10 @@ function Painel() {
 
   // Buscar colunas
   useEffect(() => {
-    async function fecthData() {
+    async function fetchData() {
       try {
         setLoadsColumns(true);
-        const res = await fecthColumns();
+        const res = await fetchColumns();
         setExistsColumn(res);
       } catch (error) {
         console.error(error);
@@ -48,7 +48,7 @@ function Painel() {
       }
     }
 
-    fecthData();
+    fetchData();
   }, []);
 
   return (

@@ -1,41 +1,56 @@
-
 /** Busca todas as colunas no banco de dados
- * 
+ *
  * @returns Colunas no banco de dados
  */
-export async function fecthColumns(){
+export async function fetchColumns() {
+  try {
+    // Request para obter os dados
+    const res = await fetch("http://localhost:8000/api/column", {
+      method: "GET",
+      credentials: "include",
+    });
 
-    try {
-
-      // Request para obter os dados
-        const res = await fetch("http://localhost:8000/api/column", {
-            method: "GET",
-            credentials: "include",
-        });
-
-        // Se houver erros lança a exception
-        if (!res.ok) {
-            const error = await res.json();
-            throw error;
-        }
-    
-        // Retorna os dados
-        return await res.json();
-
-    } catch (error) {
-        throw error;
+    // Se houver erros lança a exception
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
     }
+
+    // Retorna os dados
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
 }
 
+export async function fetchColumn(id) {
+  try {
+    // Request para obter os dados
+    const res = await fetch(`http://localhost:8000/api/column/${id}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    // Se houver erros lança a exception
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
+    }
+
+    // Retorna os dados
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
 
 /** Método para salvar/atualizar uma coluna
- * 
+ *
  * @param {*} nameColumn Nome da coluna
  * @returns Coluna que foi salva ou atuaizada
  */
 export async function saveColumn(nameColumn) {
   try {
-
     // Objeto do formulário que será enviado
     const formData = new FormData();
     formData.append("name", nameColumn);
@@ -49,14 +64,12 @@ export async function saveColumn(nameColumn) {
 
     // Em caso de erro
     if (!res.ok) {
-        const error = await res.json();
-        throw error;
+      const error = await res.json();
+      throw error;
     }
 
     return await res.json();
-
   } catch (error) {
-
     throw error;
   }
 }
@@ -78,12 +91,11 @@ export async function deleteColumn(id) {
 
     // Verifica se ocorreu tudo certo, se não ele lança a exceção
     if (!res.ok) {
-        const error = await res.json();
-        throw error
+      const error = await res.json();
+      throw error;
     }
 
     return await res.json();
-
   } catch (error) {
     throw error;
   }

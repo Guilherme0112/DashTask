@@ -15,6 +15,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
   const [topicTitle, setTopicTitle] = useState("");
   const [topicDescription, setTopicDescription] = useState("");
   const [topicValue, setTopicValue] = useState("");
+  const [isNegative, setIsNegative] = useState(false);
   // Erro do tópico
   const [errorTopic, setErrorTopic] = useState("");
 
@@ -36,7 +37,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
         columnId: column_id
       }
 
-      const data = await saveTopic(topic);
+      const data = await saveTopic(topic, null, isNegative);
 
       // Pega o tópico retornado e adiciona na array topics onde o id da
       // coluna retornada corresponda ao id da coluna da array
@@ -120,7 +121,18 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
           </div>
         </div>
 
-        <button className="btn btn-primary" onClick={() => submit()} disabled={loadCreateTopic}>
+        <div className={"form-check w-25"}>
+          <input className={"form-check-input"}
+                 type="checkbox" 
+                 value={isNegative} 
+                 onChange={(e) => setIsNegative(!isNegative)}
+                 id="checkIndeterminate" />
+          <label className={"form-check-label"} htmlFor="checkIndeterminate">
+            Valor de saída
+          </label>
+        </div>
+
+        <button className="btn btn-primary mt-4" onClick={() => submit()} disabled={loadCreateTopic}>
           {loadCreateTopic ? (
             <div className={"spinner-border spinner-border-sm text-white"} role="status">
               <span className={"visually-hidden"}></span>
