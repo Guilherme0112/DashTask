@@ -1,6 +1,7 @@
 import { deleteColumn } from "../../js/painel/crudColumn";
 import style from "../../css/Painel.module.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Column({
   coluna,
@@ -28,7 +29,9 @@ export default function Column({
     <div key={coluna.id}>
       <div className={style.column}>
         <div className={style.column_header}>
-          <span>{coluna.name}</span>
+          <span>
+            <Link to={`/financas/${coluna.id}`} className={"text-white text-decoration-none"}>{coluna.name}</Link>
+          </span>
           <button
             className={style.trash_button}
             onClick={() => deleteColumnFunction(coluna.id)}

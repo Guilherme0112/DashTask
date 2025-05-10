@@ -1,7 +1,7 @@
 import { useState } from "react";
 import style from "../../css/Painel.module.css";
 import { saveTopic } from "../../js/painel/crudTopic";
-import { maskValue } from "../../js/utils/maskValue";
+import { maskValue, unmaskValue } from "../../js/utils/maskValue";
 
 /** Componente de criação de tópicos
  * 
@@ -29,11 +29,15 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
 
     try {
       
+      const numericValue = parseFloat(unmaskValue(topicValue));
+      const finalValue = isNegative ? -Math.abs(numericValue) : Math.abs(numericValue);
+      
+
       // Enviar os dados em uma array
       const topic = {
         name: topicTitle,
         description: topicDescription,
-        value: topicValue,
+        value: finalValue.toFixed(2),
         columnId: column_id
       }
 
@@ -121,7 +125,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
           </div>
         </div>
 
-        <div className={"form-check w-25"}>
+        <div className={"form-check"} style={{width: "35%"}}>
           <input className={"form-check-input"}
                  type="checkbox" 
                  value={isNegative} 

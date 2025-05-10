@@ -30,8 +30,8 @@ export function maskValue(value){
  * @param {*} value Valor que terá a formatação retirada
  * @returns input => 11,11 | output => 11.11
  */
-export function unmaskValue(value){
-    return value.replace(/\./g, "")  
-                .replace(",", ".")  
-                .trim()
+export function unmaskValue(value) {
+    return value
+      .replace(/[^\d,.-]/g, "")
+      .replace(",", ".");        
 }

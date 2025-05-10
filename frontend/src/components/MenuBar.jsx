@@ -21,7 +21,7 @@ function MenuBar() {
 
       if (!res.ok) {
         console.error(await res.json());
-        alert("ocorreu algum erro ao fazer logout");
+        alert("Ccorreu algum erro ao fazer logout");
         return;
       }
 
@@ -44,12 +44,12 @@ function MenuBar() {
         <div style={{ paddingTop: "50px " }}>
           {authorization ? (
             <>
-              <Link to="/painel">Painel</Link>
-              <Link to="/financas">Finanças</Link>
+              <Link to="/painel" onClick={toggleMenu}>Painel</Link>
+              <Link to="/configuracoes" onClick={toggleMenu}>Configurações</Link>
               <button onClick={logout} className={"btn text-primary"}>Sair</button>
             </>
           ) : (
-            <Link to="/">Entrar</Link>
+            <Link to="/" onClick={toggleMenu}>Entrar</Link>
           )}
         </div>
       </div>

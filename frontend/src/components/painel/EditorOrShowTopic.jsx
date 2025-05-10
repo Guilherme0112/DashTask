@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "../../css/Painel.module.css";
 import { deleteTopic, saveTopic } from "../../js/painel/crudTopic";
-import { maskValue } from "../../js/utils/maskValue";
+import { maskValue, unmaskValue } from "../../js/utils/maskValue";
 
 export default function EditTopic({
   showTopic,
@@ -14,25 +14,35 @@ export default function EditTopic({
   const [topicTitle, setTopicTitle] = useState(selectedTopic.name ?? "");
   const [topicDescription, setTopicDescription] = useState(selectedTopic.description ?? "");
   const [topicValue, setTopicValue] = useState(selectedTopic.value ?? "0,00");
+  const [isNegative, setIsNegative] = useState(false);
 
   const [loadUpdate, setLoadUpdate] = useState(false);
   const [loadDelete, setLoadDelete] = useState(false);
   const [errorTopic, setErrorTopic] = useState("");
 
+useEffect(() => {
+  const numericValue = Number(String(selectedTopic.value).replace(",", "."));
+  setIsNegative(numericValue < 0);
+}, [selectedTopic.value]);
+
+  
   async function submit() {
     
+    const numericValue = parseFloat(unmaskValue(topicValue));
+    const finalValue = isNegative ? -Math.abs(numericValue) : Math.abs(numericValue);
+
     setLoadUpdate(true);
 
     const topic = {
       name: topicTitle,
       description: topicDescription,
-      value: topicValue || "0,00",
+      value: finalValue.toFixed(2) || "0,00",
       columnId: selectedTopic.column_id
     }
 
     try {
 
-      const data = await saveTopic(topic, selectedTopic.id);
+      const data = await saveTopic(topic, selectedTopic.id, isNegative);
 
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
@@ -50,7 +60,6 @@ export default function EditTopic({
       enableEditTopic()
 
     } catch (error) {
-      console.log(error)
       setErrorTopic(error.errors.name[0]);
     } finally {
       setLoadUpdate(false);
@@ -186,6 +195,19 @@ export default function EditTopic({
             <label htmlFor="floatingInputGroup1">Valor</label>
           </div>
         </div>
+
+        <div className={"form-check"} style={{width: "35%"}}>
+          <input className={"form-check-input"}
+                 type="checkbox" 
+                 checked={isNegative}
+                 disabled={!editTopic}
+                 onChange={(e) => setIsNegative(e.target.checked)}
+                 id="checkIndeterminate" />
+          <label className={"form-check-label"} htmlFor="checkIndeterminate">
+            Valor de saída
+          </label>
+        </div>
+
       </div>
     </div>
   );
