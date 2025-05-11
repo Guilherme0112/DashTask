@@ -13,13 +13,14 @@ export default function EditTopic({
 
   const [topicTitle, setTopicTitle] = useState(selectedTopic.name ?? "");
   const [topicDescription, setTopicDescription] = useState(selectedTopic.description ?? "");
-  const [topicValue, setTopicValue] = useState(selectedTopic.value ?? "0,00");
+  const [topicValue, setTopicValue] = useState(selectedTopic.value);
   const [isNegative, setIsNegative] = useState(false)
 
   const [loadUpdate, setLoadUpdate] = useState(false);
   const [loadDelete, setLoadDelete] = useState(false);
   const [errorTopic, setErrorTopic] = useState("");
 
+  // Check que exibe se o valor é negativo ou não
   const initialValueRef = useRef(topicValue);
   useEffect(() => {
     const numericValue = Number(String(initialValueRef.current).replace(",", "."));
@@ -33,7 +34,7 @@ export default function EditTopic({
     const topic = {
       name: topicTitle,
       description: topicDescription,
-      value: topicValue,
+      value: unmaskValue(topicValue),
       columnId: selectedTopic.column_id
     }
 

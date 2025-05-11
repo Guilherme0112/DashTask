@@ -33,7 +33,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
       const topic = {
         name: topicTitle,
         description: topicDescription,
-        value: unmaskValue(topicValue),
+        value: unmaskValue(topicValue || "0"),
         columnId: column_id
       }
 
@@ -52,6 +52,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
       showAddTopic();
 
     } catch (error) {
+      console.log(error)
       setErrorTopic(error.errors.name[0]);
     } finally {
       setLoadCreateTopic(false);

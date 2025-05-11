@@ -23,8 +23,6 @@ export function maskValue(value) {
 
   const finalValue = isNegative ? `-${formatted}` : formatted;
 
-  console.log(finalValue)
-
   return finalValue;
 }
 
