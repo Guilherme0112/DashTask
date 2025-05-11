@@ -7,7 +7,6 @@ import Painel from './pages/Painel';
 import Financas from './pages/Financas';
 import ProtectedRoutes from './components/Auth/ProtectedRoutes';
 import { AuthProvider } from './components/Auth/AuthContext';
-import Configuracoes from './pages/Configuracoes';
 
 function App() {
 
@@ -25,9 +24,7 @@ function App() {
           <Route path="/financas/:id" element={<ProtectedRoutes>
                                             <Financas />
                                           </ProtectedRoutes>} />
-          <Route path="/configuracoes" element={<ProtectedRoutes>
-                                                  <Configuracoes />
-                                                </ProtectedRoutes>} />
+
         </Routes>
 
       </FadeInSection>

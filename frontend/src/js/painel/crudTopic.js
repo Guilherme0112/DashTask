@@ -1,16 +1,17 @@
-import { unmaskValue } from "../utils/maskValue";
+import { convertNegative } from "../utils/maskValue";
 
 /** Função que salva um tópico
  * 
- * @param {*} topic Array que tem os dados do tópico
+ * @param {*} topic Array que tem os dados do tópico'
  */
 export async function saveTopic(topic, id, isNegative){
 
+    
     // Construção do formulário
     const formData = new FormData();
     formData.append("name", topic.name);
     formData.append("description", topic.description);
-    formData.append("value", isNegative ? -Math.abs(unmaskValue(topic.value)) : Math.abs(unmaskValue(topic.value)));
+    formData.append("value", convertNegative(topic.value, isNegative));
     formData.append("column_id", topic.columnId);
     if(id) formData.append("_method", "PATCH");
     

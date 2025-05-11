@@ -28,16 +28,12 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
     setLoadCreateTopic(true);
 
     try {
-      
-      const numericValue = parseFloat(unmaskValue(topicValue));
-      const finalValue = isNegative ? -Math.abs(numericValue) : Math.abs(numericValue);
-      
-
+    
       // Enviar os dados em uma array
       const topic = {
         name: topicTitle,
         description: topicDescription,
-        value: finalValue.toFixed(2),
+        value: unmaskValue(topicValue),
         columnId: column_id
       }
 

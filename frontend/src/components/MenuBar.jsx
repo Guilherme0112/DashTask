@@ -45,7 +45,6 @@ function MenuBar() {
           {authorization ? (
             <>
               <Link to="/painel" onClick={toggleMenu}>Painel</Link>
-              <Link to="/configuracoes" onClick={toggleMenu}>Configurações</Link>
               <button onClick={logout} className={"btn text-primary"}>Sair</button>
             </>
           ) : (

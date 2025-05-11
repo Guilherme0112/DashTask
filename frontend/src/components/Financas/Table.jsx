@@ -23,8 +23,9 @@ export default function Table({ topics }) {
   })
 
   return (
+
     <>
-      <table className={"table table-sm mt-5"}>
+      <table className={"table table-sm mt-5 overflow-hidden rounded"}>
         <thead>
           <tr className={"table-primary"}>
             <th scope="col">Nome</th>

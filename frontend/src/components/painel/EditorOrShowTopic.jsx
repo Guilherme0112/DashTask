@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "../../css/Painel.module.css";
 import { deleteTopic, saveTopic } from "../../js/painel/crudTopic";
 import { maskValue, unmaskValue } from "../../js/utils/maskValue";
@@ -14,29 +14,26 @@ export default function EditTopic({
   const [topicTitle, setTopicTitle] = useState(selectedTopic.name ?? "");
   const [topicDescription, setTopicDescription] = useState(selectedTopic.description ?? "");
   const [topicValue, setTopicValue] = useState(selectedTopic.value ?? "0,00");
-  const [isNegative, setIsNegative] = useState(false);
+  const [isNegative, setIsNegative] = useState(false)
 
   const [loadUpdate, setLoadUpdate] = useState(false);
   const [loadDelete, setLoadDelete] = useState(false);
   const [errorTopic, setErrorTopic] = useState("");
 
-useEffect(() => {
-  const numericValue = Number(String(selectedTopic.value).replace(",", "."));
-  setIsNegative(numericValue < 0);
-}, [selectedTopic.value]);
+  const initialValueRef = useRef(topicValue);
+  useEffect(() => {
+    const numericValue = Number(String(initialValueRef.current).replace(",", "."));
+    setIsNegative(numericValue < 0);
+  }, [initialValueRef]);
 
-  
   async function submit() {
-    
-    const numericValue = parseFloat(unmaskValue(topicValue));
-    const finalValue = isNegative ? -Math.abs(numericValue) : Math.abs(numericValue);
 
     setLoadUpdate(true);
 
     const topic = {
       name: topicTitle,
       description: topicDescription,
-      value: finalValue.toFixed(2) || "0,00",
+      value: topicValue,
       columnId: selectedTopic.column_id
     }
 
@@ -48,14 +45,21 @@ useEffect(() => {
         prevColumns.map(col =>
           String(col.id) === data.column_id
             ? {
-                ...col,
-                topics: (col.topics || []).map(topic =>
-                  topic.id === data.id ? { ...topic, ...data } : topic
-                )
-              }
+              ...col,
+              topics: (col.topics || []).map(topic =>
+                topic.id === data.id
+                  ? {
+                    ...topic,
+                    ...data,
+                    value: parseFloat(data.value).toFixed(2),
+                  }
+                  : topic
+              )
+            }
             : col
         )
       );
+
 
       enableEditTopic()
 
@@ -68,29 +72,28 @@ useEffect(() => {
 
   // Deletar tópico
   async function submitDelete() {
-    
+
     try {
 
       setLoadDelete(true);
 
       await deleteTopic(selectedTopic.id);
-      
+
       // Remove o tópico da array de colunas
-      setExistsColumn(prevColumns => 
+      setExistsColumn(prevColumns =>
         prevColumns.map(col =>
           String(col.id) === String(selectedTopic.column_id)
-          ? {
-            ...col,
-            topics: (col.topics || []).filter(topic => String(topic.id) !== String(selectedTopic.id))
-          }
-          : col
+            ? {
+              ...col,
+              topics: (col.topics || []).filter(topic => String(topic.id) !== String(selectedTopic.id))
+            }
+            : col
         )
       );
 
       showTopic();
 
     } catch (error) {
-      console.log(error)
       setErrorTopic(error);
     } finally {
       setLoadDelete(false);
@@ -103,8 +106,8 @@ useEffect(() => {
         {/* Botão para fechar */}
         <div className={`d-flex justify-content-end`}>
           <p onClick={showTopic}
-             className="fs-3 fw-bold"
-             style={{ cursor: "pointer" }}>×</p>
+            className="fs-3 fw-bold"
+            style={{ cursor: "pointer" }}>×</p>
         </div>
 
         {/* Botão de editar/salvar */}
@@ -125,7 +128,7 @@ useEffect(() => {
 
           {editTopic ? (
             <button onClick={submit} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`} disabled={loadUpdate}>
-               {loadUpdate ? (
+              {loadUpdate ? (
                 <div className={"spinner-border spinner-border-sm text-white"} role="status">
                   <span className={"visually-hidden"}></span>
                 </div>
@@ -134,10 +137,10 @@ useEffect(() => {
               )}</button>
           ) : (
             <button onClick={enableEditTopic} className={`btn ${editTopic ? "btn-success" : "btn-primary"} fw-bold m-2`} disabled={loadUpdate}>
-                {loadUpdate ? (
-                  <div className={"spinner-border spinner-border-sm text-white"} role="status">
-                    <span className={"visually-hidden"}></span>
-                  </div>
+              {loadUpdate ? (
+                <div className={"spinner-border spinner-border-sm text-white"} role="status">
+                  <span className={"visually-hidden"}></span>
+                </div>
               ) : (
                 "✎"
               )}
@@ -149,9 +152,8 @@ useEffect(() => {
         <div className="form-floating mb-3">
           <input
             type="text"
-            className={`${
-              editTopic ? "form-control" : "form-control-plaintext"
-            } ${errorTopic ? "is-invalid" : ""}`}
+            className={`${editTopic ? "form-control" : "form-control-plaintext"
+              } ${errorTopic ? "is-invalid" : ""}`}
             id="floatingInput"
             placeholder="Titulo do tópico"
             value={topicTitle}
@@ -165,14 +167,14 @@ useEffect(() => {
           )}
         </div>
 
-        {/* Descrição do tópico */}
+        {/* Descrição do tópico (opcional) */}
         <div className="form-floating mb-3">
           <textarea
             className={`${editTopic ? "form-control" : "form-control-plaintext"}`}
             id="floatingTextarea"
             placeholder="Descrição"
             readOnly={!editTopic}
-            value={topicDescription ?? ""   }
+            value={topicDescription ?? ""}
             style={{ maxHeight: "200px", height: "auto" }}
             onChange={(e) => setTopicDescription(e.target.value)}
           ></textarea>
@@ -196,13 +198,13 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className={"form-check"} style={{width: "35%"}}>
+        <div className={"form-check"} style={{ width: "35%" }}>
           <input className={"form-check-input"}
-                 type="checkbox" 
-                 checked={isNegative}
-                 disabled={!editTopic}
-                 onChange={(e) => setIsNegative(e.target.checked)}
-                 id="checkIndeterminate" />
+            type="checkbox"
+            checked={isNegative}
+            disabled={!editTopic}
+            onChange={(e) => setIsNegative(e.target.checked)}
+            id="checkIndeterminate" />
           <label className={"form-check-label"} htmlFor="checkIndeterminate">
             Valor de saída
           </label>

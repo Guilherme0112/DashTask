@@ -18,6 +18,8 @@ Route::get('/hello', function () {
 Route::middleware([ValidateAuthTokenFromCookie::class])->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/users', [UserController::class, "show"])->middleware([ValidateAuthTokenFromCookie::class])->name("user.show");
+
 Route::post('/register', [UserController::class, "store"])->name("user.store");
 Route::post('/login', [AuthController::class,'login'])->name('login');
 Route::post("/logout", [AuthController::class,"logout"])->middleware([ValidateAuthTokenFromCookie::class])->name("logout");
