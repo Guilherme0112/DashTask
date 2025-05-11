@@ -28,7 +28,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
     setLoadCreateTopic(true);
 
     try {
-    
+
       // Enviar os dados em uma array
       const topic = {
         name: topicTitle,
@@ -44,15 +44,21 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
           String(col.id) === data.column_id
-            ? { ...col, topics: [...col.topics || [], data] }
+            ? {
+              ...col,
+              topics: [...col.topics || [], {
+                ...data,
+                value: parseFloat(data.value).toFixed(2)
+              }]
+            }
             : col
         )
       );
-      
+
+
       showAddTopic();
 
     } catch (error) {
-      console.log(error)
       setErrorTopic(error.errors.name[0]);
     } finally {
       setLoadCreateTopic(false);
@@ -122,12 +128,12 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
           </div>
         </div>
 
-        <div className={"form-check"} style={{width: "35%"}}>
+        <div className={"form-check"} style={{ width: "35%" }}>
           <input className={"form-check-input"}
-                 type="checkbox" 
-                 value={isNegative} 
-                 onChange={(e) => setIsNegative(!isNegative)}
-                 id="checkIndeterminate" />
+            type="checkbox"
+            value={isNegative}
+            onChange={(e) => setIsNegative(!isNegative)}
+            id="checkIndeterminate" />
           <label className={"form-check-label"} htmlFor="checkIndeterminate">
             Valor de saída
           </label>
@@ -141,7 +147,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
           ) : (
             <span>Salvar</span>
           )}
-          
+
         </button>
       </div>
     </div>

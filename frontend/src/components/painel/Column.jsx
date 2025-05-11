@@ -54,7 +54,7 @@ export default function Column({
             coluna.topics.map((topic, idx) => (
               <div
                 key={idx}
-                className={style.topic}
+                className={`${style.topic} text-truncate"`}
                 onClick={() => showTopic(topic)}
               >
                 {topic.name}
