@@ -9,7 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ColumnForTopic extends Model
 {
     protected $fillable = [
-        "name"
+        "name",
+        "dateOfFleet",
+        "startKM",
+        "endKM",
+        "valueForKM",
     ];
 
     public function topics(): HasMany

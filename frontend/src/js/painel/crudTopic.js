@@ -6,7 +6,6 @@ import { convertNegative } from "../utils/maskValue";
  */
 export async function saveTopic(topic, id, isNegative){
 
-    
     // Construção do formulário
     const formData = new FormData();
     formData.append("name", topic.name);

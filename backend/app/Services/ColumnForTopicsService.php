@@ -28,7 +28,12 @@ class ColumnForTopicsService
             // Valida os dados da requisição 
             $validated = $request->validate([
                 "name" => "required|min:2|max:80",
+                "dateOfFleet" => "required|date",
+                "startKM" => "required|numeric",
+                "endKM" => "required|numeric",
+                "valueForKM"=> "required|numeric",
             ]);
+
 
             // Salva o registro no banco de dados (caso não tenha passado um id)
             if ($id === null)

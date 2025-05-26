@@ -1,3 +1,5 @@
+import { unmaskValue } from "../utils/maskValue";
+
 /** Busca todas as colunas no banco de dados
  *
  * @returns Colunas no banco de dados
@@ -46,15 +48,22 @@ export async function fetchColumn(id) {
 
 /** Método para salvar/atualizar uma coluna
  *
- * @param {*} nameColumn Nome da coluna
+ * @param {*} column Dados da coluna
  * @returns Coluna que foi salva ou atuaizada
  */
-export async function saveColumn(nameColumn) {
+export async function saveColumn(column) {
   try {
+
+    column.valueForKM = unmaskValue(column.valueForKM);
+
     // Objeto do formulário que será enviado
     const formData = new FormData();
-    formData.append("name", nameColumn);
-
+    formData.append("name", column.name || "");
+    formData.append("dateOfFleet", column.dateOfFleet || "");
+    formData.append("startKM", column.startKM || "");
+    formData.append("endKM", column.endKM || "");
+    formData.append("valueForKM", column.valueForKM ?? 0);
+    
     // Request
     const res = await fetch("http://localhost:8000/api/column", {
       method: "POST",

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom"
-import formatDate from "../../js/utils/formatDate";
 import { maskValue } from "../../js/utils/maskValue";
+import { formatDateTime } from "../../js/utils/formatDate";
 
 export default function Table({ topics }) {
 
@@ -19,8 +18,7 @@ export default function Table({ topics }) {
     }).format(rawTotal);
 
     setTotal(formattedTotal);
-
-  })
+  });
 
   return (
 
@@ -44,7 +42,7 @@ export default function Table({ topics }) {
                     {topic.description ?? ""}
                   </td>
                   <td>{maskValue(topic.value)}</td>
-                  <td>{formatDate(topic.created_at)}</td>
+                  <td>{formatDateTime(topic.created_at)}</td>
                 </tr>
               ))}
               <tr className={"table-primary"}>

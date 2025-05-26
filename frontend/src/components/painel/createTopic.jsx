@@ -16,7 +16,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
   const [topicDescription, setTopicDescription] = useState("");
   const [topicValue, setTopicValue] = useState("");
   const [isNegative, setIsNegative] = useState(false);
-  // Erro do tópico
+
   const [errorTopic, setErrorTopic] = useState("");
 
   const [loadCreateTopic, setLoadCreateTopic] = useState(false);
@@ -55,7 +55,6 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
         )
       );
 
-
       showAddTopic();
 
     } catch (error) {
@@ -92,7 +91,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
             value={topicTitle}
             onChange={(e) => setTopicTitle(e.target.value)}
           />
-          <label htmlFor="floatingInput">Titulo do tópico</label>
+          <label htmlFor="floatingInput">Titulo do tópico *</label>
 
           {errorTopic && (
             <div className="invalid-feedback">{errorTopic}</div>
