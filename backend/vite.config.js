@@ -10,4 +10,9 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    server: {
+        allowedHosts: [
+            'frontend-dashtask-production.up.railway.app'
+        ],
+    },
 });
