@@ -4,7 +4,7 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['http://localhost:5173', 'https://frontend-dashtask-production.up.railway.app/'],
+    'allowed_origins' => ['http://localhost:5173', 'https://frontend-dashtask-production.up.railway.app'],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
