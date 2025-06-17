@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import style from "../css/MenuBar.module.css";
 import { useAuth } from "./Auth/AuthContext";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 function MenuBar() {
   const { setAuthorization, authorization } = useAuth();
   const [menuHidden, setMenuHidden] = useState(true);
@@ -14,7 +16,7 @@ function MenuBar() {
 
   async function logout() {
     try {
-      const res = await fetch("http://localhost:8000/api/logout", {
+      const res = await fetch(`${BACKEND_URL}/api/logout`, {
         method: "POST",
         credentials: "include",
       });

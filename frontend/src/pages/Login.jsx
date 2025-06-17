@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/Auth/AuthContext";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 function Login() {
   const [error, setError] = useState("");
 
@@ -26,7 +28,7 @@ function Login() {
       formData.append("password", password);
 
       // Faz a requisição
-      const res = await fetch("http://localhost:8000/api/login", {
+      const res = await fetch(`${BACKEND_URL}/api/login`, {
         method: "POST",
         credentials: "include",
         body: formData,
