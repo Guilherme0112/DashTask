@@ -10,7 +10,8 @@ class Topic extends Model
         "name",
         "description",
         "value",
-        "column_id"
+        "column_id",
+        "launchDate"
     ];
 
     public function column()

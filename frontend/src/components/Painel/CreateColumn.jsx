@@ -104,6 +104,7 @@ export default function CreateColumn({ setNewColumn, setExistsColumn }) {
               value={dateFrota}
               onChange={(e) => setDateFrota(e.target.value)}
               onClick={(e) => e.target.showPicker()}
+              required
             />
             <label htmlFor="floatingInput">Data do serviço *</label>
 

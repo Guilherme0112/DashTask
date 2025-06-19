@@ -3,12 +3,6 @@ import style from "../../css/Painel.module.css";
 import { saveTopic } from "../../js/painel/crudTopic";
 import { maskValue, unmaskValue } from "../../js/utils/maskValue";
 
-/** Componente de criação de tópicos
- * 
- * @param showAddTopic Função que abre/fecha dialog
- * @param columnId Id da coluna que receberá o tópico
- * @param setExistsColumn Colunas existentes até o momento 
- */
 export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }) {
 
   // Valores do tópico
@@ -16,31 +10,25 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
   const [topicDescription, setTopicDescription] = useState("");
   const [topicValue, setTopicValue] = useState("");
   const [isNegative, setIsNegative] = useState(false);
+  const [launchDate, setLaunchDate] = useState("");
 
   const [errorTopic, setErrorTopic] = useState("");
 
   const [loadCreateTopic, setLoadCreateTopic] = useState(false);
 
-
-  // Função para salvar o tópico
   async function submit() {
-
     setLoadCreateTopic(true);
-
     try {
-
-      // Enviar os dados em uma array
       const topic = {
         name: topicTitle,
         description: topicDescription,
         value: unmaskValue(topicValue || "0"),
+        launchDate: launchDate,
         columnId: column_id
       }
 
       const data = await saveTopic(topic, null, isNegative);
 
-      // Pega o tópico retornado e adiciona na array topics onde o id da
-      // coluna retornada corresponda ao id da coluna da array
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
           String(col.id) === data.column_id
@@ -54,9 +42,7 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
             : col
         )
       );
-
       showAddTopic();
-
     } catch (error) {
       setErrorTopic(error.errors.name[0]);
     } finally {
@@ -64,11 +50,9 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
     }
   }
 
-
   return (
     <div className={style.background_container}>
       <div className={style.container_add_topic}>
-        {/* Botão para fechar */}
         <div className={`d-flex justify-content-end`}>
           <p
             onClick={showAddTopic}
@@ -90,12 +74,24 @@ export default function CreateTopic({ showAddTopic, column_id, setExistsColumn }
             placeholder="Titulo do tópico"
             value={topicTitle}
             onChange={(e) => setTopicTitle(e.target.value)}
+            required
           />
           <label htmlFor="floatingInput">Titulo do tópico *</label>
 
           {errorTopic && (
             <div className="invalid-feedback">{errorTopic}</div>
           )}
+        </div>
+
+        <div className="form-floating mb-3">
+          <input type="date"
+            id="floatingInput"
+            className="form-control"
+            value={launchDate}
+            onChange={(e) => setLaunchDate(e.target.value)}
+            onClick={(e) => e.target.showPicker()}
+          />
+          <label htmlFor="floatingInput">Data do lançamento</label>
         </div>
 
         {/* Descrição do tópico */}

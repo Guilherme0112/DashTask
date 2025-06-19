@@ -18,6 +18,7 @@ class TopicService {
                 "name" => "required|min:2|max:50",
                 "description" => "nullable|string",
                 "value" => "nullable|numeric",
+                "launchDate" => "nullable|date",
                 "column_id" => "required|exists:column_for_topics,id"
             ]);
 

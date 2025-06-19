@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { maskValue } from "../../js/utils/maskValue";
-import { formatDateTime } from "../../js/utils/formatDate";
+import { formatDate } from "../../js/utils/formatDate";
 
 export default function Table({ topics }) {
 
   const [total, setTotal] = useState("");
 
   useEffect(() => {
-
     if (!Array.isArray(topics)) return;
 
     const rawTotal = topics.reduce((acc, topic) => acc + Number(topic.value ?? 0), 0);
@@ -16,12 +15,10 @@ export default function Table({ topics }) {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(rawTotal);
-
     setTotal(formattedTotal);
   });
 
   return (
-
     <>
       <table className={"table table-sm mt-5 overflow-hidden rounded"}>
         <thead>
@@ -29,7 +26,7 @@ export default function Table({ topics }) {
             <th scope="col">Nome</th>
             <th scope="col">Descrição</th>
             <th scope="col">Valor (R$)</th>
-            <th scope="col">Criação</th>
+            <th scope="col">Lançamento</th>
           </tr>
         </thead>
         <tbody>
@@ -37,17 +34,17 @@ export default function Table({ topics }) {
             <>
               {topics.map((topic, index) => (
                 <tr key={index} className={topic.value < 0 ? `table-danger` : `table-success`}>
-                  <td>{topic.name}</td>
+                  <td>{topic.name ?? "-"}</td>
                   <td style={{ fontSize: "14px" }} className="text-muted">
-                    {topic.description ?? ""}
+                    {topic.description ?? "-"}
                   </td>
-                  <td>{maskValue(topic.value)}</td>
-                  <td>{formatDateTime(topic.created_at)}</td>
+                  <td>{maskValue(topic.value) ?? "-"}</td>
+                  <td>{formatDate(topic.launchDate) ?? "-"}</td>
                 </tr>
               ))}
               <tr className={"table-primary"}>
                 <td colSpan="4">
-                  Total: {total}
+                  Total: {total ?? "-"}
                 </td>
               </tr>
             </>
@@ -58,7 +55,6 @@ export default function Table({ topics }) {
               </td>
             </tr>
           )}
-
         </tbody>
       </table>
     </>

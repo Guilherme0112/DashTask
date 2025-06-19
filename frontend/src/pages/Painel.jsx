@@ -85,7 +85,7 @@ function Painel() {
                 />
               )   
           )) : (
-            <h5 className={"w-100 m-2 text-center"}>Nenhuma coluna encontrada</h5>
+            <h5 className={"w-100 m-2 text-center text-secondary"}>Nenhuma coluna encontrada</h5>
           )
           )}
         </div>

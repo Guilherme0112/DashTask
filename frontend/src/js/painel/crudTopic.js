@@ -7,6 +7,7 @@ export async function saveTopic(topic, id, isNegative) {
     const formData = new FormData();
     formData.append("name", topic.name);
     formData.append("description", topic.description);
+    formData.append("launchDate", topic.launchDate);
     formData.append("value", convertNegative(topic.value, isNegative));
     formData.append("column_id", topic.columnId);
     if (id) formData.append("_method", "PATCH");

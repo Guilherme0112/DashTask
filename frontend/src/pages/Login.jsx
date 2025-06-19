@@ -15,46 +15,42 @@ function Login() {
   const navigate = useNavigate();
   const { setAuthorization } = useAuth();
 
-  // Submit login
   async function submit(event) {
 
     setLoadLogin(true);
     event.preventDefault();
 
     try {
-      // Cria o objeto do formulário e adiciona os valroes
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
 
-      // Faz a requisição
       const res = await fetch(`${BACKEND_URL}/api/login`, {
         method: "POST",
         credentials: "include",
         body: formData,
       });
 
-      // Verifica se retornou erro
       if (!res.ok) {
-        const errorData = await res.json();
-        setError(errorData.message || "Erro ao fazer login");
-        return;
-      }
+        if(res.status() === 401){
+          setError("Erro ao fazer login");
+          return;
+        }
 
+        const errorData = await res.json();
+        throw errorData;
+      }
       setAuthorization(true);
 
-      // Se não teve erro, redireciona para o painel
       navigate("/painel");
     } catch (error) {
-
-      console.log(error)
+      setError("Erro ao fazer login");
     } finally {
       setLoadLogin(false);
     }
   }
 
   return (
-    // Início do formulário
     <main
       className={
         "h-100 d-flex align-items-center justify-content-center flex-wrap"
@@ -77,6 +73,7 @@ function Login() {
             aria-describedby="emailHelp"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         {/* Fim do email */}
@@ -92,6 +89,7 @@ function Login() {
             id="exampleInputPassword1"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         {/* Fim da senha */}

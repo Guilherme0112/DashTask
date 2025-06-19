@@ -15,6 +15,7 @@ export default function EditTopic({
   const [topicDescription, setTopicDescription] = useState(selectedTopic.description ?? "");
   const [topicValue, setTopicValue] = useState(selectedTopic.value);
   const [isNegative, setIsNegative] = useState(false)
+  const [launchDate, setLaunchDate] = useState("");
 
   const [loadUpdate, setLoadUpdate] = useState(false);
   const [loadDelete, setLoadDelete] = useState(false);
@@ -28,18 +29,17 @@ export default function EditTopic({
   }, [initialValueRef]);
 
   async function submit() {
-
     setLoadUpdate(true);
 
     const topic = {
       name: topicTitle,
       description: topicDescription,
       value: unmaskValue(topicValue),
+      launchDate: launchDate,
       columnId: selectedTopic.column_id
     }
 
     try {
-
       const data = await saveTopic(topic, selectedTopic.id, isNegative);
 
       setExistsColumn(prevColumns =>
@@ -60,10 +60,7 @@ export default function EditTopic({
             : col
         )
       );
-
-
       enableEditTopic()
-
     } catch (error) {
       setErrorTopic(error.errors.name[0]);
     } finally {
@@ -71,16 +68,11 @@ export default function EditTopic({
     }
   }
 
-  // Deletar tópico
   async function submitDelete() {
-
     try {
-
       setLoadDelete(true);
-
       await deleteTopic(selectedTopic.id);
 
-      // Remove o tópico da array de colunas
       setExistsColumn(prevColumns =>
         prevColumns.map(col =>
           String(col.id) === String(selectedTopic.column_id)
@@ -91,9 +83,7 @@ export default function EditTopic({
             : col
         )
       );
-
       showTopic();
-
     } catch (error) {
       setErrorTopic(error);
     } finally {
@@ -168,6 +158,18 @@ export default function EditTopic({
           )}
         </div>
 
+        <div className="form-floating mb-3">
+          <input type="date"
+            id="floatingInput"
+            className={`${editTopic ? "form-control" : "form-control-plaintext"}`}
+            value={launchDate}
+            readOnly={!editTopic}
+            onChange={(e) => setLaunchDate(e.target.value)}
+            onClick={(e) => e.target.showPicker()}
+          />
+          <label htmlFor="floatingInput">Data do lançamento</label>
+        </div>
+
         {/* Descrição do tópico (opcional) */}
         <div className="form-floating mb-3">
           <textarea
@@ -210,7 +212,6 @@ export default function EditTopic({
             Valor de saída
           </label>
         </div>
-
       </div>
     </div>
   );
