@@ -15,7 +15,7 @@ export default function EditTopic({
   const [topicDescription, setTopicDescription] = useState(selectedTopic.description ?? "");
   const [topicValue, setTopicValue] = useState(selectedTopic.value);
   const [isNegative, setIsNegative] = useState(false)
-  const [launchDate, setLaunchDate] = useState("");
+  const [launchDate, setLaunchDate] = useState(selectedTopic.launchDate ?? "");
 
   const [loadUpdate, setLoadUpdate] = useState(false);
   const [loadDelete, setLoadDelete] = useState(false);

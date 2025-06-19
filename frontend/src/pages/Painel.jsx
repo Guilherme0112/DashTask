@@ -7,12 +7,12 @@ import Column from "../components/Painel/Column";
 import style from "../css/Painel.module.css";
 
 function Painel() {
-  // Tópicos
+
   const [editTopic, setEditTopic] = useState(false);
   const [showTopicDetails, setShowTopicDetails] = useState(false);
   const [columnIdForTopic, setColumnIdForTopic] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  // Coluna
+
   const [newColumn, setNewColumn] = useState("");
   const [existsColumn, setExistsColumn] = useState([]);
   const [loadColumns, setLoadsColumns] = useState(false);
@@ -116,8 +116,6 @@ function Painel() {
           setExistsColumn={setExistsColumn}
         />
       )}
-
-      
     </>
   );
 }
