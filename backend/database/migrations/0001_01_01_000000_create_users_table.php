@@ -35,6 +35,14 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        \Illuminate\Support\Facades\DB::table('users')->insert([
+        'name' => 'Admin',
+        'email' => 'admin@admin',
+        'password' => \Illuminate\Support\Facades\Hash::make('admin'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
     }
 
     /**
